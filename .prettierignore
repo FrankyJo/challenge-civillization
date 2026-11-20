@@ -1,0 +1,11 @@
+node_modules
+dist
+coverage
+.turbo
+pnpm-lock.yaml
+playwright-report
+test-results
+civilization-all-prompts.md
+docs/**/*.md
+prompts/**/*.md
+.claude/**/*.md

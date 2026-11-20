@@ -1,0 +1,103 @@
+name: civilization
+
+# Local development infrastructure. Ports bind to loopback only; credentials
+# are throwaway local defaults (see .env.example), never production values.
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: civilization
+      POSTGRES_PASSWORD: civilization
+      POSTGRES_DB: civilization
+    ports: ["127.0.0.1:5432:5432"]
+    volumes: ["civilization-postgres:/var/lib/postgresql/data"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U civilization"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+  redis:
+    image: redis:7-alpine
+    ports: ["127.0.0.1:6379:6379"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  # Optional containerised processes: `docker compose --profile apps up --build`
+  migrate:
+    profiles: ["apps"]
+    build: { context: ., target: runtime }
+    command: ["node", "packages/db/dist/cli.js", "up"]
+    environment:
+      DATABASE_URL: postgresql://civilization:civilization@postgres:5432/civilization
+    depends_on: { postgres: { condition: service_healthy } }
+  api:
+    profiles: ["apps"]
+    build: { context: ., target: runtime }
+    command: ["node", "apps/api/dist/main.js"]
+    environment: &app-env
+      NODE_ENV: production
+      DATABASE_URL: postgresql://civilization:civilization@postgres:5432/civilization
+      REDIS_URL: redis://redis:6379
+      API_HOST: 0.0.0.0
+      SIMULATION_HEALTH_HOST: 0.0.0.0
+      WORKER_HEALTH_HOST: 0.0.0.0
+    ports: ["127.0.0.1:3000:3000"]
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:3000/health/ready').then((r) => process.exit(r.ok ? 0 : 1), () => process.exit(1))",
+        ]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+      start_period: 5s
+    depends_on: &app-deps
+      migrate: { condition: service_completed_successfully }
+      redis: { condition: service_healthy }
+  simulation:
+    profiles: ["apps"]
+    build: { context: ., target: runtime }
+    command: ["node", "apps/simulation/dist/main.js"]
+    environment: *app-env
+    ports: ["127.0.0.1:3001:3001"]
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:3001/health/ready').then((r) => process.exit(r.ok ? 0 : 1), () => process.exit(1))",
+        ]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+      start_period: 5s
+    depends_on: *app-deps
+  worker:
+    profiles: ["apps"]
+    build: { context: ., target: runtime }
+    command: ["node", "apps/worker/dist/main.js"]
+    environment: *app-env
+    ports: ["127.0.0.1:3002:3002"]
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:3002/health/ready').then((r) => process.exit(r.ok ? 0 : 1), () => process.exit(1))",
+        ]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+      start_period: 5s
+    depends_on: *app-deps
+
+volumes:
+  civilization-postgres:

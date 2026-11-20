@@ -1,0 +1,8 @@
+packages:
+  - "apps/*"
+  - "packages/*"
+
+# Install-time scripts are denied by default (pnpm 10). msgpackr-extract is an
+# optional native accelerator for BullMQ's msgpackr; the pure-JS fallback is used.
+ignoredBuiltDependencies:
+  - msgpackr-extract

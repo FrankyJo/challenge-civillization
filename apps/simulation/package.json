@@ -1,0 +1,20 @@
+{
+  "name": "@civ/simulation",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Headless authoritative simulation process (tick runner arrives in Phase 06)",
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json",
+    "test": "vitest run --dir src",
+    "start": "node --env-file-if-exists=../../.env dist/main.js"
+  },
+  "dependencies": {
+    "@civ/contracts": "workspace:*",
+    "@civ/db": "workspace:*",
+    "@civ/domain": "workspace:*",
+    "@civ/telemetry": "workspace:*",
+    "zod": "4.6.7"
+  }
+}

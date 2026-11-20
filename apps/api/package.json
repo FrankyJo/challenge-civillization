@@ -1,0 +1,31 @@
+{
+  "name": "@civ/api",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Fastify HTTP API and authentication boundary (read-only public projections)",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/app.d.ts",
+      "default": "./dist/app.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json",
+    "test": "vitest run --dir src",
+    "test:integration": "vitest run --dir test/integration --hookTimeout=30000 --testTimeout=30000",
+    "start": "node --env-file-if-exists=../../.env dist/main.js"
+  },
+  "dependencies": {
+    "@civ/contracts": "workspace:*",
+    "@civ/db": "workspace:*",
+    "@civ/telemetry": "workspace:*",
+    "fastify": "5.12.8",
+    "ioredis": "5.11.1",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@civ/testing": "workspace:*"
+  }
+}

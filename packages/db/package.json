@@ -1,0 +1,33 @@
+{
+  "name": "@civ/db",
+  "version": "0.1.0",
+  "private": true,
+  "description": "PostgreSQL access, health probe and forward/backward SQL migrations",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "migrations"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json",
+    "test": "vitest run --dir src",
+    "test:integration": "vitest run --dir test/integration --hookTimeout=30000 --testTimeout=30000",
+    "migrate": "node --env-file-if-exists=../../.env dist/cli.js"
+  },
+  "dependencies": {
+    "@civ/contracts": "workspace:*",
+    "pg": "8.23.1",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@civ/testing": "workspace:*",
+    "@types/pg": "8.23.1"
+  }
+}

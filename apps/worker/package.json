@@ -1,0 +1,25 @@
+{
+  "name": "@civ/worker",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Background jobs: projections, snapshots, archive and proposal jobs (BullMQ)",
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json",
+    "test": "vitest run --dir src",
+    "test:integration": "vitest run --dir test/integration --hookTimeout=30000 --testTimeout=30000",
+    "start": "node --env-file-if-exists=../../.env dist/main.js"
+  },
+  "dependencies": {
+    "@civ/contracts": "workspace:*",
+    "@civ/db": "workspace:*",
+    "@civ/telemetry": "workspace:*",
+    "bullmq": "6.7.8",
+    "ioredis": "5.11.1",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@civ/testing": "workspace:*"
+  }
+}
