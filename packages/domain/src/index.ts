@@ -1,10 +1,11 @@
 /**
  * @civ/domain — pure simulation domain.
  *
- * Phase 00 establishes only the package boundary and its determinism lint
- * guard (see eslint.config.js: no Math.random, Date, performance, process,
- * timers or I/O imports here). Aggregates, commands, events and invariants
- * arrive from Phase 01 onward.
+ * Boundaries are enforced twice: the ESLint determinism guard (no
+ * Math.random, Date, performance, process, timers or I/O here) and the
+ * dependency policy in scripts/architecture-policy.mjs (production code may
+ * import only @civ/contracts and zod). Command/event envelopes live in
+ * @civ/contracts; aggregates and transitions arrive from Phase 02 onward.
  */
 
 /** Engine version stamped on health reports and, later, on every transition. */

@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "seasonId": "ssn_00000001",
+  "worldId": "wld_season001",
+  "number": 1,
+  "status": "paused",
+  "startsAt": "2027-01-01T00:00:00Z",
+  "endsAt": "2027-01-31T00:00:00Z",
+  "statusNote": "Paused for maintenance; history will catch up."
+}

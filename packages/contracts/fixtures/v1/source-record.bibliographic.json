@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "sourceId": "src_00000002",
+  "title": "Example survey of pre-industrial irrigation devices",
+  "authors": ["Example Institute of Technology History"],
+  "locator": { "kind": "bibliographic", "citation": "Example, A. (1998). Fixture citation. Example Press." },
+  "sourceType": "scholarly",
+  "publishedOn": null,
+  "accessedAt": "2026-11-20T10:00:00Z",
+  "claimSummary": "Contract fixture only: illustrates field shapes, not a real historical claim.",
+  "license": "Citation only; no text reproduced.",
+  "archivedChecksum": "sha256:2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f98a5e886266e7ae",
+  "verification": "verified"
+}

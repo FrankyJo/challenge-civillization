@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "number",
+      "const": 1
+    },
+    "checkpointId": {
+      "type": "string",
+      "pattern": "^chk_[0-9a-z]{8,64}$"
+    },
+    "worldId": {
+      "type": "string",
+      "pattern": "^wld_[0-9a-z]{8,64}$"
+    },
+    "instant": {
+      "type": "object",
+      "properties": {
+        "tick": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "year": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9999
+        },
+        "dayOfYear": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 366
+        }
+      },
+      "required": [
+        "tick",
+        "year",
+        "dayOfYear"
+      ],
+      "additionalProperties": false
+    },
+    "eventPosition": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9007199254740991
+    },
+    "stateHash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "versions": {
+      "type": "object",
+      "properties": {
+        "engineVersion": {
+          "type": "string",
+          "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?$"
+        },
+        "contentVersion": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "configVersion": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "engineVersion",
+        "contentVersion",
+        "configVersion"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "checkpointId",
+    "worldId",
+    "instant",
+    "eventPosition",
+    "stateHash",
+    "versions"
+  ],
+  "additionalProperties": false,
+  "title": "checkpoint v1",
+  "description": "Canonical state checkpoint metadata: ledger position, instant, state hash, versions."
+}

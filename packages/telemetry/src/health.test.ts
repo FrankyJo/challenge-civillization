@@ -1,6 +1,6 @@
 import { request } from "node:http";
 import type { AddressInfo } from "node:net";
-import { healthReportSchema } from "@civ/contracts";
+import { apiErrorSchema, healthReportSchema } from "@civ/contracts";
 import { afterEach, describe, expect, it } from "vitest";
 import { createHealthServer, runHealthChecks } from "./health.js";
 import { createLogger } from "./logger.js";
@@ -74,8 +74,16 @@ describe("createHealthServer", () => {
     expect(ready.status).toBe(503);
     expect(healthReportSchema.parse(await ready.json()).status).toBe("down");
 
-    expect((await fetch(`${base}/nope`)).status).toBe(404);
-    expect((await fetch(`${base}/health`, { method: "POST" })).status).toBe(405);
+    const missing = await fetch(`${base}/nope`, { headers: { "x-correlation-id": "probe-1" } });
+    expect(missing.status).toBe(404);
+    expect(missing.headers.get("x-correlation-id")).toBe("probe-1");
+    expect(apiErrorSchema.parse(await missing.json()).error).toMatchObject({
+      code: "not_found",
+      correlationId: "probe-1",
+    });
+    const post = await fetch(`${base}/health`, { method: "POST" });
+    expect(post.status).toBe(405);
+    expect(apiErrorSchema.parse(await post.json()).error.code).toBe("method_not_allowed");
   });
 
   it("survives malformed request targets that would make `new URL` throw", async () => {

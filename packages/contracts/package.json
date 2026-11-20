@@ -16,7 +16,9 @@
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "typecheck": "tsc -p tsconfig.json",
-    "test": "vitest run --dir src"
+    "test": "vitest run --dir src",
+    "schemas:write": "pnpm run build && node scripts/write-schema-docs.mjs",
+    "fixtures:freeze": "node scripts/freeze-fixtures.mjs"
   },
   "dependencies": {
     "zod": "4.6.7"

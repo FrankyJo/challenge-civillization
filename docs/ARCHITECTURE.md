@@ -19,6 +19,8 @@ packages/testing    deterministic builders, fixtures, model/property checks
 
 Processes may be scaled independently. Splitting into services requires measured pressure and an ADR.
 
+The allowed dependency graph between these workspaces is executable policy (`scripts/architecture-policy.mjs`, enforced by `pnpm arch:check`); contract rules are in `docs/CONTRACTS.md`.
+
 ## Authority and data flow
 
 1. A scheduler maps real time to due simulation ticks.

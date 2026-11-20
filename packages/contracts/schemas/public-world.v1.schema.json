@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "number",
+      "const": 1
+    },
+    "worldId": {
+      "type": "string",
+      "pattern": "^wld_[0-9a-z]{8,64}$"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120,
+      "pattern": "^\\S(?:.*\\S)?$"
+    },
+    "seed": {
+      "type": "string",
+      "pattern": "^(?:[0-9a-f]{2}){8,32}$"
+    },
+    "startYear": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9999
+    },
+    "endYear": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9999
+    },
+    "versions": {
+      "type": "object",
+      "properties": {
+        "engineVersion": {
+          "type": "string",
+          "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?$"
+        },
+        "contentVersion": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "configVersion": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "engineVersion",
+        "contentVersion",
+        "configVersion"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "worldId",
+    "name",
+    "seed",
+    "startYear",
+    "endYear",
+    "versions"
+  ],
+  "additionalProperties": false,
+  "title": "public-world v1",
+  "description": "Public world metadata (allowlist: schemaVersion, worldId, name, seed, startYear, endYear, versions)."
+}

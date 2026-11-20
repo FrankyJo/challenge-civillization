@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "sourceId": "src_00000001",
+  "title": "Example survey of pre-industrial irrigation devices",
+  "authors": ["Example Institute of Technology History"],
+  "locator": { "kind": "url", "url": "https://example.org/irrigation-survey" },
+  "sourceType": "scholarly",
+  "publishedOn": "1998-05",
+  "accessedAt": "2026-11-20T10:00:00Z",
+  "claimSummary": "Contract fixture only: illustrates field shapes, not a real historical claim.",
+  "license": "Citation only; no text reproduced.",
+  "archivedChecksum": null,
+  "verification": "pending"
+}

@@ -13,6 +13,7 @@
     "gates": "node scripts/run-gates.mjs",
     "phase:status": "node scripts/phase-status.mjs",
     "test:starter": "node --test tests/*.test.mjs",
+    "arch:check": "node scripts/check-architecture.mjs",
     "build": "turbo run build",
     "typecheck": "turbo run typecheck",
     "lint": "eslint . --max-warnings=0 && prettier --check .",

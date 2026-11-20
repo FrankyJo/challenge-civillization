@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "error": {
+    "code": "rate_limited",
+    "message": "Too many requests. Retry later.",
+    "correlationId": "req-42",
+    "details": [],
+    "retryAfterSeconds": 30
+  }
+}

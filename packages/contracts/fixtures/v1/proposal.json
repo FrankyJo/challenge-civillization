@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "proposalId": "prp_00000001",
+  "revision": 2,
+  "state": "evidence_reviewed",
+  "title": "Water-lifting wheel",
+  "theme": "agriculture_water",
+  "sourceIds": ["src_00000001"],
+  "createdAt": "2026-11-20T00:00:00Z",
+  "updatedAt": "2026-11-21T12:30:00Z"
+}

@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "service": "api",
+  "version": "0.1.0",
+  "status": "down",
+  "checks": {
+    "postgres": { "status": "ok", "latencyMs": 2 },
+    "redis": { "status": "down", "latencyMs": 1000, "error": "timeout" }
+  }
+}

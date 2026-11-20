@@ -21,6 +21,7 @@ const pnpm = process.platform === "win32" ? "pnpm.cmd" : "pnpm";
 const steps = [
   { name: "starter verification", command: node, args: ["scripts/verify-kit.mjs"] },
   { name: "repository meta-tests", command: node, args: ["--test", "tests/*.test.mjs"] },
+  { name: "architecture boundaries", command: node, args: ["scripts/check-architecture.mjs"] },
   { name: "lint + format", command: pnpm, args: ["run", "lint"] },
   { name: "typecheck, unit tests, build", command: pnpm, args: ["exec", "turbo", "run", "typecheck", "test", "build"] },
   { name: "integration tests", command: pnpm, args: ["exec", "turbo", "run", "test:integration", "--concurrency=1"] },

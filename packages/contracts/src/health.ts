@@ -13,6 +13,11 @@ export const dependencyCheckSchema = z.object({
 });
 export type DependencyCheck = z.infer<typeof dependencyCheckSchema>;
 
+/**
+ * Health reports are read across rolling deploys (web/ops tooling may be
+ * older than the process), so unknown fields are tolerated and stripped on
+ * read; see docs/CONTRACTS.md "Strictness and rolling compatibility".
+ */
 export const healthReportSchema = z.object({
   schemaVersion: z.literal(HEALTH_REPORT_SCHEMA_VERSION),
   service: z.enum(["api", "simulation", "worker"]),

@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "error": {
+    "code": "invalid_request",
+    "message": "The request is invalid.",
+    "correlationId": "4f1c2a9e-0d4b-4c55-9a43-2b6f8f2a1c10",
+    "details": [{ "path": "payload.reason", "message": "Too small: expected string to have >=1 characters" }]
+  }
+}

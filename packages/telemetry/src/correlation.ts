@@ -1,13 +1,15 @@
 import { AsyncLocalStorage } from "node:async_hooks";
 import { randomUUID } from "node:crypto";
+import { CORRELATION_ID_PATTERN } from "@civ/contracts";
+
+/** HTTP header carrying the correlation ID in requests and responses. */
+export const CORRELATION_HEADER = "x-correlation-id";
 
 const storage = new AsyncLocalStorage<string>();
 
-/** Accept caller-supplied correlation IDs only if they are short and safe to log. */
-const SAFE_ID = /^[A-Za-z0-9._:-]{1,128}$/;
-
+/** Accept caller-supplied correlation IDs only if they match the contract (short, log-safe). */
 export function isValidCorrelationId(value: unknown): value is string {
-  return typeof value === "string" && SAFE_ID.test(value);
+  return typeof value === "string" && CORRELATION_ID_PATTERN.test(value);
 }
 
 /** Use the inbound ID when it is well-formed; otherwise mint a fresh one. */

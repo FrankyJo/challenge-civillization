@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "reviewId": "rvw_00000001",
+  "proposalId": "prp_00000001",
+  "revision": 2,
+  "from": "schema_validated",
+  "to": "evidence_reviewed",
+  "decision": "advance",
+  "reviewer": { "operatorId": "opr_00000002", "role": "editor" },
+  "findings": [],
+  "decidedAt": "2026-11-21T12:30:00Z"
+}

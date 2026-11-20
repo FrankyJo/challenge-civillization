@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "seasonId": "ssn_00000001",
+  "worldId": "wld_season001",
+  "number": 1,
+  "status": "scheduled",
+  "startsAt": "2027-01-01T00:00:00Z",
+  "endsAt": "2027-01-31T00:00:00Z",
+  "statusNote": null,
+  "updatedAt": "2026-11-20T00:00:00Z",
+  "updatedBy": { "kind": "operator", "operatorId": "opr_00000001" }
+}

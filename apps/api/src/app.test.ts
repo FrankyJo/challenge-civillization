@@ -1,7 +1,7 @@
-import { healthReportSchema } from "@civ/contracts";
+import { apiErrorSchema, healthReportSchema } from "@civ/contracts";
 import { createLogger } from "@civ/telemetry";
 import { afterEach, describe, expect, it } from "vitest";
-import { buildApp, CORRELATION_HEADER } from "./app.js";
+import { buildApp, CORRELATION_HEADER, errorCodeFor } from "./app.js";
 import { apiEnvSchema, loadApiEnv } from "./env.js";
 
 const logger = createLogger({ service: "api", level: "silent" });
@@ -60,6 +60,81 @@ describe("correlation IDs", () => {
     const res = await app({}).inject("/missing");
     expect(res.statusCode).toBe(404);
     expect(res.headers[CORRELATION_HEADER]).toBeDefined();
+  });
+});
+
+describe("error responses", () => {
+  it("use the ApiError contract for unknown routes and methods", async () => {
+    const instance = app({});
+    for (const request of [
+      { method: "GET" as const, url: "/missing" },
+      { method: "DELETE" as const, url: "/health" },
+    ]) {
+      const res = await instance.inject({ ...request, headers: { [CORRELATION_HEADER]: "req-404" } });
+      expect(res.statusCode).toBe(404);
+      expect(apiErrorSchema.parse(res.json()).error).toEqual({
+        code: "not_found",
+        message: "The requested resource does not exist.",
+        correlationId: "req-404",
+        details: [],
+      });
+    }
+  });
+
+  it("map client errors to stable codes without echoing request data", async () => {
+    const instance = app({});
+    instance.post("/echo", async (request) => request.body);
+    const res = await instance.inject({
+      method: "POST",
+      url: "/echo",
+      headers: { "content-type": "application/json" },
+      payload: '{"secret": "hunter2"',
+    });
+    expect(res.statusCode).toBe(400);
+    const body = apiErrorSchema.parse(res.json());
+    expect(body.error.code).toBe("invalid_request");
+    expect(res.body).not.toContain("hunter2");
+    const unsupported = await instance.inject({
+      method: "POST",
+      url: "/echo",
+      headers: { "content-type": "application/x-civ" },
+      payload: "x",
+    });
+    expect(unsupported.statusCode).toBe(415);
+    expect(apiErrorSchema.parse(unsupported.json()).error.code).toBe("unsupported_media_type");
+  });
+
+  it("answer malformed URLs (rejected before routing) with the contract", async () => {
+    const instance = app({});
+    for (const url of ["/%", "/health/%zz", "/%E0%A4%A"]) {
+      const res = await instance.inject({ url, headers: { [CORRELATION_HEADER]: "req-bad-url" } });
+      expect(res.statusCode).toBe(400);
+      expect(apiErrorSchema.parse(res.json()).error).toMatchObject({
+        code: "invalid_request",
+        correlationId: "req-bad-url",
+      });
+      expect(res.headers[CORRELATION_HEADER]).toBe("req-bad-url");
+      expect(res.body).not.toContain("%");
+    }
+  });
+
+  it("hide internal error details behind a generic 500", async () => {
+    const instance = app({});
+    instance.get("/boom", async () => {
+      throw new Error("db password is hunter2 at 10.0.0.5");
+    });
+    const res = await instance.inject("/boom");
+    expect(res.statusCode).toBe(500);
+    expect(apiErrorSchema.parse(res.json()).error).toMatchObject({ code: "internal", details: [] });
+    expect(res.body).not.toMatch(/hunter2|10\.0\.0\.5/);
+  });
+
+  it("classify unknown thrown values as internal", () => {
+    expect(errorCodeFor(new Error("x"))).toBe("internal");
+    expect(errorCodeFor({ statusCode: 418 })).toBe("invalid_request");
+    expect(errorCodeFor({ statusCode: 502 })).toBe("internal");
+    expect(errorCodeFor("string")).toBe("internal");
+    expect(errorCodeFor({ statusCode: 429 })).toBe("rate_limited");
   });
 });
 

@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "reviewId": "rvw_00000002",
+  "proposalId": "prp_00000001",
+  "revision": 1,
+  "from": "evidence_reviewed",
+  "to": "draft",
+  "decision": "reject",
+  "reviewer": { "operatorId": "opr_00000002", "role": "editor" },
+  "findings": [{ "code": "citation_unverified", "message": "Quoted claim not found in cited source.", "path": "sourceIds.0" }],
+  "decidedAt": "2026-11-20T18:00:00Z"
+}

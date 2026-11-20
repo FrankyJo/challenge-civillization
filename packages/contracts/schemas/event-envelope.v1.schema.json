@@ -1,0 +1,269 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "anyOf": [
+    {
+      "type": "object",
+      "properties": {
+        "schemaVersion": {
+          "type": "number",
+          "const": 1
+        },
+        "eventId": {
+          "type": "string",
+          "pattern": "^evt_[0-9a-z]{8,64}$"
+        },
+        "type": {
+          "type": "string",
+          "const": "world.paused"
+        },
+        "typeVersion": {
+          "type": "number",
+          "const": 1
+        },
+        "worldId": {
+          "type": "string",
+          "pattern": "^wld_[0-9a-z]{8,64}$"
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "instant": {
+          "type": "object",
+          "properties": {
+            "tick": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "year": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9999
+            },
+            "dayOfYear": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 366
+            }
+          },
+          "required": [
+            "tick",
+            "year",
+            "dayOfYear"
+          ],
+          "additionalProperties": false
+        },
+        "causationId": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^cmd_[0-9a-z]{8,64}$"
+            },
+            {
+              "type": "string",
+              "pattern": "^evt_[0-9a-z]{8,64}$"
+            }
+          ]
+        },
+        "correlationId": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9._:-]{1,128}$"
+        },
+        "versions": {
+          "type": "object",
+          "properties": {
+            "engineVersion": {
+              "type": "string",
+              "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?$"
+            },
+            "contentVersion": {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            },
+            "configVersion": {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            }
+          },
+          "required": [
+            "engineVersion",
+            "contentVersion",
+            "configVersion"
+          ],
+          "additionalProperties": false
+        },
+        "payload": {
+          "type": "object",
+          "properties": {
+            "reason": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 500,
+              "allOf": [
+                {
+                  "pattern": "^\\S(?:[\\s\\S]*\\S)?$"
+                },
+                {
+                  "pattern": "^(?:[^\\p{Cc}\\p{Cf}]|[\\n\\t])*$"
+                }
+              ]
+            }
+          },
+          "required": [
+            "reason"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "eventId",
+        "type",
+        "typeVersion",
+        "worldId",
+        "sequence",
+        "instant",
+        "causationId",
+        "correlationId",
+        "versions",
+        "payload"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "schemaVersion": {
+          "type": "number",
+          "const": 1
+        },
+        "eventId": {
+          "type": "string",
+          "pattern": "^evt_[0-9a-z]{8,64}$"
+        },
+        "type": {
+          "type": "string",
+          "const": "world.resumed"
+        },
+        "typeVersion": {
+          "type": "number",
+          "const": 1
+        },
+        "worldId": {
+          "type": "string",
+          "pattern": "^wld_[0-9a-z]{8,64}$"
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "instant": {
+          "type": "object",
+          "properties": {
+            "tick": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "year": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9999
+            },
+            "dayOfYear": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 366
+            }
+          },
+          "required": [
+            "tick",
+            "year",
+            "dayOfYear"
+          ],
+          "additionalProperties": false
+        },
+        "causationId": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^cmd_[0-9a-z]{8,64}$"
+            },
+            {
+              "type": "string",
+              "pattern": "^evt_[0-9a-z]{8,64}$"
+            }
+          ]
+        },
+        "correlationId": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9._:-]{1,128}$"
+        },
+        "versions": {
+          "type": "object",
+          "properties": {
+            "engineVersion": {
+              "type": "string",
+              "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?$"
+            },
+            "contentVersion": {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            },
+            "configVersion": {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            }
+          },
+          "required": [
+            "engineVersion",
+            "contentVersion",
+            "configVersion"
+          ],
+          "additionalProperties": false
+        },
+        "payload": {
+          "type": "object",
+          "properties": {
+            "reason": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 500,
+              "allOf": [
+                {
+                  "pattern": "^\\S(?:[\\s\\S]*\\S)?$"
+                },
+                {
+                  "pattern": "^(?:[^\\p{Cc}\\p{Cf}]|[\\n\\t])*$"
+                }
+              ]
+            }
+          },
+          "required": [
+            "reason"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "eventId",
+        "type",
+        "typeVersion",
+        "worldId",
+        "sequence",
+        "instant",
+        "causationId",
+        "correlationId",
+        "versions",
+        "payload"
+      ],
+      "additionalProperties": false
+    }
+  ],
+  "title": "event-envelope v1",
+  "description": "Every registered domain event variant with its audit envelope."
+}

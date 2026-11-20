@@ -1,12 +1,16 @@
 import { createServer, type Server } from "node:http";
 import {
   aggregateStatus,
+  apiErrorStatus,
+  createApiError,
   HEALTH_REPORT_SCHEMA_VERSION,
+  type ApiErrorCode,
   type DependencyCheck,
   type HealthReport,
   type ServiceName,
 } from "@civ/contracts";
 import type { Logger } from "pino";
+import { CORRELATION_HEADER, resolveCorrelationId } from "./correlation.js";
 
 /** A dependency probe. Resolve when healthy; throw/reject when not. */
 export type HealthProbe = () => Promise<void>;
@@ -104,23 +108,29 @@ export function createHealthServer(options: HealthServerOptions): Server {
     // Never parse the raw request target with `new URL`: inputs such as `//`
     // throw synchronously and would crash the process from a single request.
     const path = (req.url ?? "/").split("?", 1)[0];
+    const correlationId = resolveCorrelationId(req.headers[CORRELATION_HEADER]);
     const send = (statusCode: number, body: unknown): void => {
-      res.writeHead(statusCode, { "content-type": "application/json; charset=utf-8", "cache-control": "no-store" });
+      res.writeHead(statusCode, {
+        "content-type": "application/json; charset=utf-8",
+        "cache-control": "no-store",
+        [CORRELATION_HEADER]: correlationId,
+      });
       res.end(JSON.stringify(body));
     };
-    if (req.method !== "GET") return send(405, { error: "method not allowed" });
+    const fail = (code: ApiErrorCode): void => send(apiErrorStatus(code), createApiError({ code, correlationId }));
+    if (req.method !== "GET") return fail("method_not_allowed");
     if (path === "/health") return send(200, livenessReport(options.service, options.version));
     if (path === "/health/ready") {
       runHealthChecks(checkOptions).then(
         (report) => send(report.status === "ok" ? 200 : 503, report),
         (error: unknown) => {
           options.logger.error({ err: error }, "readiness check crashed");
-          send(500, { error: "internal error" });
+          fail("internal");
         },
       );
       return undefined;
     }
-    return send(404, { error: "not found" });
+    return fail("not_found");
   });
 }
 
