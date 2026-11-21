@@ -31,6 +31,11 @@
       "sha256": "fe8f65e859c1db8863cf5fd95782bda2be21b4003c714d99d3b3a9c0c244bcda"
     },
     {
+      "file": "v1/content-pack.json",
+      "contract": "content-pack",
+      "sha256": "46145518a370a0c9964956137b25f31a70717451bc6d0d774adb54a5aa987634"
+    },
+    {
       "file": "v1/event-cursor-string.json",
       "contract": "event-cursor-string",
       "sha256": "6462f7219c565731f77fcfb93e7dbd60647e071369333a1c6d3857c723fca31a"
@@ -106,6 +111,11 @@
       "sha256": "aa91089751c97b9a34afc5a3e4d0be4b511cf68454bd1673a7a747c184a2133e"
     },
     {
+      "file": "v1/seed-population.json",
+      "contract": "seed-population",
+      "sha256": "5f310ae67f8a66fb9948e111413f3f5d41026e4044e9cd4c9f8e425e7f35fc60"
+    },
+    {
       "file": "v1/simulation-instant.json",
       "contract": "simulation-instant",
       "sha256": "d66fa29e96cf91d62cc2d26485f4878a49dd49b054e218ee90472c9968096b20"
@@ -124,6 +134,11 @@
       "file": "v1/version-stamp.json",
       "contract": "version-stamp",
       "sha256": "e87a98a715f334624e32178a9ca01da6a96643fd1f58c2a2832f1985aafbbc96"
+    },
+    {
+      "file": "v1/world-data.json",
+      "contract": "world-data",
+      "sha256": "bd6c6b563130e36de51b6c9f70bce20ec5e0bd79acb37329b0a2288978b77179"
     },
     {
       "file": "v1/world-map.json",

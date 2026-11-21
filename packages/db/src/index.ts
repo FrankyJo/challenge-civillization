@@ -5,6 +5,7 @@ export * from "./transaction.js";
 export * from "./digest.js";
 export * from "./worlds.js";
 export * from "./maps.js";
+export * from "./populations.js";
 export * from "./ledger.js";
 export * from "./outbox.js";
 export * from "./consumers.js";

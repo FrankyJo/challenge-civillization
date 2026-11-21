@@ -81,6 +81,9 @@ importers:
 
   apps/simulation:
     dependencies:
+      '@civ/content':
+        specifier: workspace:*
+        version: link:../../packages/content
       '@civ/contracts':
         specifier: workspace:*
         version: link:../../packages/contracts
@@ -154,7 +157,17 @@ importers:
         specifier: workspace:*
         version: link:../../packages/testing
 
-  packages/content: {}
+  packages/content:
+    dependencies:
+      '@civ/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      '@civ/domain':
+        specifier: workspace:*
+        version: link:../domain
+      zod:
+        specifier: 4.6.7
+        version: 4.6.7
 
   packages/contracts:
     dependencies:

@@ -12,6 +12,7 @@
     "test:integration": "vitest run --dir test/integration --hookTimeout=60000 --testTimeout=60000"
   },
   "dependencies": {
+    "@civ/content": "workspace:*",
     "@civ/contracts": "workspace:*",
     "@civ/db": "workspace:*",
     "@civ/domain": "workspace:*",

@@ -21,6 +21,9 @@ export const ID_PREFIXES = Object.freeze({
   review: "rvw",
   region: "rgn",
   waterBody: "wbd",
+  person: "per",
+  household: "hhd",
+  settlement: "stl",
 } as const);
 
 export type IdKind = keyof typeof ID_PREFIXES;

@@ -28,6 +28,9 @@ The format is `<prefix>_<8–64 chars [0-9a-z]>`. The prefixes are fixed and mus
 | review | `rvw` |
 | region | `rgn` |
 | waterBody | `wbd` |
+| person | `per` |
+| household | `hhd` |
+| settlement | `stl` |
 
 - Each kind has a branded TypeScript type, so passing an ID of the wrong kind is a compile error. At runtime, the wrong kind is a validation error.
 - Correlation IDs are log-safe tokens matching `[A-Za-z0-9._:-]{1,128}`, because they may originate outside the system. Telemetry accepts inbound values using this same pattern.
@@ -119,6 +122,22 @@ Registered variants: the world-control pair specified in `docs/SECURITY-OPERATIO
   - one character per cell for terrain, biome, elevation band and features;
   - run-length region membership.
 - The snapshot carries no seed, resources, hazards, climate values or drainage. Its specification is in `docs/GEOGRAPHY.md`.
+
+## Content and population
+
+- `content-pack` (internal) is a versioned pack. It contains:
+  - cultures, with their naming system, household norms, gender categories, economy and fertility level;
+  - name datasets, each entry with usage, applicability, era, weight and uncertainty, plus authored provenance;
+  - a demography table: survivors l(x) in ppm, natural fertility, twins, sex ratio and disability;
+  - bibliographic citations.
+- Cross-references such as dataset chains, share sums and fallback coverage are checked by `@civ/content` validation.
+- `seed-population` (internal) holds a world's initial people, households and settlements:
+  - kin links;
+  - guardianship;
+  - health and capabilities;
+  - per-part name provenance (a dataset entry with its fallback level, a derivation from a relative, or the home settlement).
+- `world-data` (internal) is the simulation-owned world state data. It names the seed population by hash.
+- Specification: `docs/POPULATION.md`.
 
 ## Evolution and compatibility
 

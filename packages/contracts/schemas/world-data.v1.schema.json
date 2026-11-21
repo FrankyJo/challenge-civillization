@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "number",
+      "const": 1
+    },
+    "seedPopulationHash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "seedPopulationHash"
+  ],
+  "additionalProperties": false,
+  "title": "world-data v1",
+  "description": "Simulation-owned world state data: names the seed population by hash."
+}

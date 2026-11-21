@@ -1,0 +1,649 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "number",
+      "const": 1
+    },
+    "packId": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_.]{2,63}$"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?$"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 200
+    },
+    "license": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 200
+    },
+    "cultures": {
+      "minItems": 1,
+      "maxItems": 32,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "cultureId": {
+            "type": "string",
+            "pattern": "^culture\\.[a-z][a-z0-9_]{1,31}$"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 40
+          },
+          "languageId": {
+            "type": "string",
+            "pattern": "^language\\.[a-z][a-z0-9_]{1,31}$"
+          },
+          "description": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 1000
+          },
+          "seedSharePpm": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000000
+          },
+          "prefers": {
+            "minItems": 1,
+            "maxItems": 4,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "coast",
+                "river",
+                "lowland",
+                "upland",
+                "grassland",
+                "forest"
+              ]
+            }
+          },
+          "naming": {
+            "type": "object",
+            "properties": {
+              "pattern": {
+                "type": "string",
+                "enum": [
+                  "given_patronymic",
+                  "given_matronymic",
+                  "given_clan",
+                  "given_place"
+                ]
+              },
+              "datasets": {
+                "minItems": 1,
+                "maxItems": 5,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^names\\.[a-z][a-z0-9_]{1,31}$"
+                }
+              },
+              "derivedSuffix": {
+                "type": "object",
+                "properties": {
+                  "female": {
+                    "type": "string",
+                    "pattern": "^[a-z]{1,8}$"
+                  },
+                  "male": {
+                    "type": "string",
+                    "pattern": "^[a-z]{1,8}$"
+                  }
+                },
+                "required": [
+                  "female",
+                  "male"
+                ],
+                "additionalProperties": false
+              },
+              "clanFrom": {
+                "type": "string",
+                "enum": [
+                  "father",
+                  "mother"
+                ]
+              },
+              "uniqueAmongSiblings": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "pattern",
+              "datasets",
+              "derivedSuffix",
+              "clanFrom",
+              "uniqueAmongSiblings"
+            ],
+            "additionalProperties": false
+          },
+          "household": {
+            "type": "object",
+            "properties": {
+              "adultAge": {
+                "type": "integer",
+                "minimum": 12,
+                "maximum": 21
+              },
+              "marriageAge": {
+                "type": "object",
+                "properties": {
+                  "female": {
+                    "type": "object",
+                    "properties": {
+                      "min": {
+                        "type": "integer",
+                        "minimum": 10,
+                        "maximum": 60
+                      },
+                      "peak": {
+                        "type": "integer",
+                        "minimum": 10,
+                        "maximum": 60
+                      },
+                      "max": {
+                        "type": "integer",
+                        "minimum": 10,
+                        "maximum": 70
+                      }
+                    },
+                    "required": [
+                      "min",
+                      "peak",
+                      "max"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "male": {
+                    "type": "object",
+                    "properties": {
+                      "min": {
+                        "type": "integer",
+                        "minimum": 10,
+                        "maximum": 60
+                      },
+                      "peak": {
+                        "type": "integer",
+                        "minimum": 10,
+                        "maximum": 60
+                      },
+                      "max": {
+                        "type": "integer",
+                        "minimum": 10,
+                        "maximum": 70
+                      }
+                    },
+                    "required": [
+                      "min",
+                      "peak",
+                      "max"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "female",
+                  "male"
+                ],
+                "additionalProperties": false
+              },
+              "everMarriedPpm": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 1000000
+              },
+              "formWeights": {
+                "type": "object",
+                "properties": {
+                  "nuclear": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 1000
+                  },
+                  "stem": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 1000
+                  },
+                  "joint": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 1000
+                  },
+                  "solitary": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 1000
+                  },
+                  "kin_care": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 1000
+                  }
+                },
+                "required": [
+                  "nuclear",
+                  "stem",
+                  "joint",
+                  "solitary",
+                  "kin_care"
+                ],
+                "additionalProperties": false
+              },
+              "residence": {
+                "type": "string",
+                "enum": [
+                  "patrilocal",
+                  "matrilocal",
+                  "either"
+                ]
+              },
+              "fosterPpm": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 1000000
+              }
+            },
+            "required": [
+              "adultAge",
+              "marriageAge",
+              "everMarriedPpm",
+              "formWeights",
+              "residence",
+              "fosterPpm"
+            ],
+            "additionalProperties": false
+          },
+          "genders": {
+            "maxItems": 4,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "category": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z_]{1,31}$"
+                },
+                "sexBasis": {
+                  "type": "string",
+                  "enum": [
+                    "female",
+                    "male",
+                    "any"
+                  ]
+                },
+                "prevalencePpm": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 1000000
+                }
+              },
+              "required": [
+                "category",
+                "sexBasis",
+                "prevalencePpm"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "economy": {
+            "type": "object",
+            "properties": {
+              "cultivation": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 1000
+              },
+              "herding": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 1000
+              },
+              "fishing": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 1000
+              },
+              "craft": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 1000
+              },
+              "building": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 1000
+              },
+              "trade": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 1000
+              },
+              "healing": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 1000
+              }
+            },
+            "required": [
+              "cultivation",
+              "herding",
+              "fishing",
+              "craft",
+              "building",
+              "trade",
+              "healing"
+            ],
+            "additionalProperties": false
+          },
+          "maritalFertilityPpm": {
+            "type": "integer",
+            "minimum": 100000,
+            "maximum": 1200000
+          }
+        },
+        "required": [
+          "cultureId",
+          "name",
+          "languageId",
+          "description",
+          "seedSharePpm",
+          "prefers",
+          "naming",
+          "household",
+          "genders",
+          "economy",
+          "maritalFertilityPpm"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "nameDatasets": {
+      "minItems": 1,
+      "maxItems": 64,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "datasetId": {
+            "type": "string",
+            "pattern": "^names\\.[a-z][a-z0-9_]{1,31}$"
+          },
+          "version": {
+            "type": "string",
+            "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?$"
+          },
+          "languageId": {
+            "type": "string",
+            "pattern": "^language\\.[a-z][a-z0-9_]{1,31}$"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 200
+          },
+          "license": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 200
+          },
+          "provenance": {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "type": "string",
+                "const": "authored"
+              },
+              "generator": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 120
+              },
+              "specDigest": {
+                "type": "string",
+                "pattern": "^sha256:[0-9a-f]{64}$"
+              },
+              "notes": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 1000
+              }
+            },
+            "required": [
+              "kind",
+              "generator",
+              "specDigest",
+              "notes"
+            ],
+            "additionalProperties": false
+          },
+          "entries": {
+            "minItems": 1,
+            "maxItems": 5000,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "entryId": {
+                  "type": "string",
+                  "pattern": "^[a-z]{2,6}\\.[a-z]\\.[a-z]\\.\\d{4}$"
+                },
+                "form": {
+                  "type": "string",
+                  "pattern": "^[a-z]{2,16}$"
+                },
+                "display": {
+                  "type": "string",
+                  "pattern": "^[A-Z][a-z]{1,15}$"
+                },
+                "usage": {
+                  "type": "string",
+                  "enum": [
+                    "given",
+                    "clan",
+                    "place"
+                  ]
+                },
+                "applicability": {
+                  "type": "string",
+                  "enum": [
+                    "female",
+                    "male",
+                    "any"
+                  ]
+                },
+                "eraFrom": {
+                  "anyOf": [
+                    {
+                      "type": "integer",
+                      "minimum": -5000,
+                      "maximum": 9999
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "eraTo": {
+                  "anyOf": [
+                    {
+                      "type": "integer",
+                      "minimum": -5000,
+                      "maximum": 9999
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "weight": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 1000
+                },
+                "uncertainty": {
+                  "type": "string",
+                  "enum": [
+                    "low",
+                    "medium",
+                    "high"
+                  ]
+                }
+              },
+              "required": [
+                "entryId",
+                "form",
+                "display",
+                "usage",
+                "applicability",
+                "eraFrom",
+                "eraTo",
+                "weight",
+                "uncertainty"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "datasetId",
+          "version",
+          "languageId",
+          "title",
+          "license",
+          "provenance",
+          "entries"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "demography": {
+      "type": "object",
+      "properties": {
+        "tableId": {
+          "type": "string",
+          "pattern": "^demography\\.[a-z][a-z0-9_]{1,31}$"
+        },
+        "description": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 1000
+        },
+        "survivorsPpm": {
+          "minItems": 101,
+          "maxItems": 101,
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1000000
+          }
+        },
+        "naturalFertilityPpm": {
+          "minItems": 7,
+          "maxItems": 7,
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1000000
+          }
+        },
+        "twinPpm": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000
+        },
+        "sexRatioAtBirth": {
+          "type": "integer",
+          "minimum": 900,
+          "maximum": 1200
+        },
+        "disabilityPpm": {
+          "minItems": 4,
+          "maxItems": 4,
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1000000
+          }
+        },
+        "citations": {
+          "minItems": 1,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^src_[0-9a-z]{8,64}$"
+          }
+        }
+      },
+      "required": [
+        "tableId",
+        "description",
+        "survivorsPpm",
+        "naturalFertilityPpm",
+        "twinPpm",
+        "sexRatioAtBirth",
+        "disabilityPpm",
+        "citations"
+      ],
+      "additionalProperties": false
+    },
+    "citations": {
+      "maxItems": 200,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "sourceId": {
+            "type": "string",
+            "pattern": "^src_[0-9a-z]{8,64}$"
+          },
+          "citation": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 500
+          },
+          "usedFor": {
+            "type": "string",
+            "minLength": 5,
+            "maxLength": 500
+          }
+        },
+        "required": [
+          "sourceId",
+          "citation",
+          "usedFor"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "packId",
+    "version",
+    "title",
+    "license",
+    "cultures",
+    "nameDatasets",
+    "demography",
+    "citations"
+  ],
+  "additionalProperties": false,
+  "title": "content-pack v1",
+  "description": "Versioned content pack: fictional cultures and naming systems, constructed-language name datasets with eras and provenance, demography table, citations."
+}

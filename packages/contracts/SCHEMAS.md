@@ -23,6 +23,9 @@ contracts must never be, except through an explicit public DTO allowlist.
 | `map-params` | 1 | internal | [schema](schemas/map-params.v1.schema.json) | World map generator parameters: grid size and spacing, latitude, temperature, land share, relief, regions. |
 | `world-map` | 1 | internal | [schema](schemas/world-map.v1.schema.json) | Authoritative generated map: per-cell terrain, climate, drainage, resources and hazards with units; regions, water bodies, deposits; content hash. |
 | `public-map-snapshot` | 1 | public | [schema](schemas/public-map-snapshot.v1.schema.json) | Compact renderer-agnostic map projection: terrain, biome, elevation band, coast/river and regions only. |
+| `content-pack` | 1 | internal | [schema](schemas/content-pack.v1.schema.json) | Versioned content pack: fictional cultures and naming systems, constructed-language name datasets with eras and provenance, demography table, citations. |
+| `seed-population` | 1 | internal | [schema](schemas/seed-population.v1.schema.json) | A world's initial living people with kinship, guardianship, households, settlements, health, capabilities and name provenance. |
+| `world-data` | 1 | internal | [schema](schemas/world-data.v1.schema.json) | Simulation-owned world state data: names the seed population by hash. |
 | `api-error` | 1 | public | [schema](schemas/api-error.v1.schema.json) | The single HTTP error body: stable code, safe message, correlation ID, issue details. |
 | `health-report` | 1 | public | [schema](schemas/health-report.v1.schema.json) | Liveness/readiness report served by every Node process. |
 | `proposal` | 1 | internal | [schema](schemas/proposal.v1.schema.json) | Historical content proposal and its lifecycle state. |

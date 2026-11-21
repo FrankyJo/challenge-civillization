@@ -10,6 +10,7 @@ export * from "./env.js";
 export * from "./health.js";
 export * from "./ids.js";
 export * from "./messages.js";
+export * from "./population.js";
 export * from "./proposal.js";
 export * from "./public-dto.js";
 export * from "./schema-docs.js";

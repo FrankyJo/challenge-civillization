@@ -16,6 +16,12 @@
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "typecheck": "tsc -p tsconfig.json",
-    "test": "vitest run --dir src"
+    "test": "vitest run --dir src",
+    "content:build": "node scripts/build-season-one.mjs"
+  },
+  "dependencies": {
+    "@civ/contracts": "workspace:*",
+    "zod": "4.6.7",
+    "@civ/domain": "workspace:*"
   }
 }

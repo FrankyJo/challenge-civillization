@@ -9,6 +9,7 @@
 export * from "./calendar.js";
 export * from "./data-guard.js";
 export * from "./geography/index.js";
+export * from "./population/index.js";
 export * from "./hash.js";
 export * from "./ids.js";
 export * from "./kernel.js";

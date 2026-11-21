@@ -1,0 +1,1486 @@
+{
+  "schemaVersion": 1,
+  "packId": "civ.season_one",
+  "version": "1.0.0",
+  "title": "Season one: cultures, names and demography at 1 CE",
+  "license": "CC0-1.0 (authored for this project; citations are references only)",
+  "cultures": [
+    {
+      "cultureId": "culture.velani",
+      "name": "Velani",
+      "languageId": "language.velan",
+      "description": "Coastal and estuary farmers and fishers; children carry a patronymic.",
+      "seedSharePpm": 300000,
+      "prefers": [
+        "coast",
+        "river",
+        "lowland"
+      ],
+      "naming": {
+        "pattern": "given_patronymic",
+        "datasets": [
+          "names.velan",
+          "names.coastal_family",
+          "names.shared"
+        ],
+        "derivedSuffix": {
+          "female": "ith",
+          "male": "an"
+        },
+        "clanFrom": "father",
+        "uniqueAmongSiblings": true
+      },
+      "household": {
+        "adultAge": 15,
+        "marriageAge": {
+          "female": {
+            "min": 15,
+            "peak": 18,
+            "max": 30
+          },
+          "male": {
+            "min": 17,
+            "peak": 25,
+            "max": 40
+          }
+        },
+        "everMarriedPpm": 930000,
+        "formWeights": {
+          "nuclear": 520,
+          "stem": 300,
+          "joint": 150,
+          "solitary": 35,
+          "kin_care": 60
+        },
+        "residence": "patrilocal",
+        "fosterPpm": 250000
+      },
+      "genders": [],
+      "economy": {
+        "cultivation": 700,
+        "herding": 250,
+        "fishing": 700,
+        "craft": 400,
+        "building": 300,
+        "trade": 450,
+        "healing": 150
+      },
+      "maritalFertilityPpm": 820000
+    },
+    {
+      "cultureId": "culture.sukeru",
+      "name": "Sukeru",
+      "languageId": "language.suker",
+      "description": "River-valley cultivators; descent and names follow the mother.",
+      "seedSharePpm": 200000,
+      "prefers": [
+        "river",
+        "lowland"
+      ],
+      "naming": {
+        "pattern": "given_matronymic",
+        "datasets": [
+          "names.suker",
+          "names.coastal_family",
+          "names.shared"
+        ],
+        "derivedSuffix": {
+          "female": "nai",
+          "male": "ko"
+        },
+        "clanFrom": "mother",
+        "uniqueAmongSiblings": true
+      },
+      "household": {
+        "adultAge": 15,
+        "marriageAge": {
+          "female": {
+            "min": 15,
+            "peak": 18,
+            "max": 30
+          },
+          "male": {
+            "min": 17,
+            "peak": 25,
+            "max": 40
+          }
+        },
+        "everMarriedPpm": 930000,
+        "formWeights": {
+          "nuclear": 420,
+          "stem": 360,
+          "joint": 160,
+          "solitary": 30,
+          "kin_care": 70
+        },
+        "residence": "matrilocal",
+        "fosterPpm": 250000
+      },
+      "genders": [
+        {
+          "category": "kahnu",
+          "sexBasis": "any",
+          "prevalencePpm": 3000
+        }
+      ],
+      "economy": {
+        "cultivation": 900,
+        "herding": 200,
+        "fishing": 400,
+        "craft": 450,
+        "building": 350,
+        "trade": 300,
+        "healing": 250
+      },
+      "maritalFertilityPpm": 850000
+    },
+    {
+      "cultureId": "culture.orvathi",
+      "name": "Orvathi",
+      "languageId": "language.orvath",
+      "description": "Upland herders and miners organised in patrilineal clans.",
+      "seedSharePpm": 200000,
+      "prefers": [
+        "upland",
+        "forest"
+      ],
+      "naming": {
+        "pattern": "given_clan",
+        "datasets": [
+          "names.orvath",
+          "names.highland_family",
+          "names.shared"
+        ],
+        "derivedSuffix": {
+          "female": "eth",
+          "male": "ok"
+        },
+        "clanFrom": "father",
+        "uniqueAmongSiblings": true
+      },
+      "household": {
+        "adultAge": 15,
+        "marriageAge": {
+          "female": {
+            "min": 15,
+            "peak": 20,
+            "max": 32
+          },
+          "male": {
+            "min": 18,
+            "peak": 26,
+            "max": 42
+          }
+        },
+        "everMarriedPpm": 930000,
+        "formWeights": {
+          "nuclear": 360,
+          "stem": 320,
+          "joint": 240,
+          "solitary": 30,
+          "kin_care": 60
+        },
+        "residence": "patrilocal",
+        "fosterPpm": 250000
+      },
+      "genders": [],
+      "economy": {
+        "cultivation": 350,
+        "herding": 900,
+        "fishing": 100,
+        "craft": 500,
+        "building": 500,
+        "trade": 250,
+        "healing": 150
+      },
+      "maritalFertilityPpm": 800000
+    },
+    {
+      "cultureId": "culture.daethi",
+      "name": "Daethi",
+      "languageId": "language.daeth",
+      "description": "Grassland herders and cultivators who name people after their home settlement.",
+      "seedSharePpm": 150000,
+      "prefers": [
+        "grassland",
+        "lowland"
+      ],
+      "naming": {
+        "pattern": "given_place",
+        "datasets": [
+          "names.daeth",
+          "names.highland_family",
+          "names.shared"
+        ],
+        "derivedSuffix": {
+          "female": "ai",
+          "male": "om"
+        },
+        "clanFrom": "father",
+        "uniqueAmongSiblings": false
+      },
+      "household": {
+        "adultAge": 15,
+        "marriageAge": {
+          "female": {
+            "min": 15,
+            "peak": 18,
+            "max": 30
+          },
+          "male": {
+            "min": 17,
+            "peak": 25,
+            "max": 40
+          }
+        },
+        "everMarriedPpm": 930000,
+        "formWeights": {
+          "nuclear": 560,
+          "stem": 260,
+          "joint": 130,
+          "solitary": 40,
+          "kin_care": 60
+        },
+        "residence": "either",
+        "fosterPpm": 250000
+      },
+      "genders": [],
+      "economy": {
+        "cultivation": 600,
+        "herding": 800,
+        "fishing": 100,
+        "craft": 350,
+        "building": 300,
+        "trade": 550,
+        "healing": 150
+      },
+      "maritalFertilityPpm": 830000
+    },
+    {
+      "cultureId": "culture.ilunai",
+      "name": "Ilunai",
+      "languageId": "language.ilun",
+      "description": "Forest-edge cultivators, foragers and woodworkers with matrilineal clans.",
+      "seedSharePpm": 150000,
+      "prefers": [
+        "forest",
+        "river"
+      ],
+      "naming": {
+        "pattern": "given_clan",
+        "datasets": [
+          "names.ilun",
+          "names.coastal_family",
+          "names.shared"
+        ],
+        "derivedSuffix": {
+          "female": "wen",
+          "male": "un"
+        },
+        "clanFrom": "mother",
+        "uniqueAmongSiblings": true
+      },
+      "household": {
+        "adultAge": 15,
+        "marriageAge": {
+          "female": {
+            "min": 15,
+            "peak": 19,
+            "max": 30
+          },
+          "male": {
+            "min": 17,
+            "peak": 23,
+            "max": 38
+          }
+        },
+        "everMarriedPpm": 930000,
+        "formWeights": {
+          "nuclear": 520,
+          "stem": 300,
+          "joint": 150,
+          "solitary": 35,
+          "kin_care": 60
+        },
+        "residence": "matrilocal",
+        "fosterPpm": 250000
+      },
+      "genders": [
+        {
+          "category": "wenai",
+          "sexBasis": "any",
+          "prevalencePpm": 2000
+        }
+      ],
+      "economy": {
+        "cultivation": 550,
+        "herding": 150,
+        "fishing": 350,
+        "craft": 700,
+        "building": 550,
+        "trade": 300,
+        "healing": 300
+      },
+      "maritalFertilityPpm": 800000
+    }
+  ],
+  "nameDatasets": [
+    {
+      "datasetId": "names.velan",
+      "version": "1.0.0",
+      "languageId": "language.velan",
+      "title": "Velan personal names",
+      "license": "CC0-1.0 (authored for this project)",
+      "provenance": {
+        "kind": "authored",
+        "generator": "civ-namegen 1.0.0 (packages/content/scripts/build-season-one.mjs)",
+        "specDigest": "sha256:24a303b3295619fad6a9956c54840b54fb0719d19a2850f36e04dc5a56614b12",
+        "notes": "Constructed language; names generated from the phonology spec and frozen. Eras are authored fashion intervals of the fictional world, not historical attestations."
+      },
+      "entries": [
+        {
+          "entryId": "vel.g.f.0001",
+          "form": "seve",
+          "display": "Seve",
+          "usage": "given",
+          "applicability": "female",
+          "eraFrom": null,
+          "eraTo": -59,
+          "weight": 1000,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "vel.g.f.0002",
+          "form": "dasia",
+          "display": "Dasia",
+          "usage": "given",
+          "applicability": "female",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 574,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "vel.g.f.0003",
+          "form": "lola",
+          "display": "Lola",
+          "usage": "given",
+          "applicability": "female",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 415,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "vel.g.m.0001",
+          "form": "rivir",
+          "display": "Rivir",
+          "usage": "given",
+          "applicability": "male",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 1000,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "vel.g.m.0004",
+          "form": "donthalo",
+          "display": "Donthalo",
+          "usage": "given",
+          "applicability": "male",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 330,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "vel.g.a.0001",
+          "form": "denlises",
+          "display": "Denlises",
+          "usage": "given",
+          "applicability": "any",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 1000,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "vel.g.a.0005",
+          "form": "theles",
+          "display": "Theles",
+          "usage": "given",
+          "applicability": "any",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 276,
+          "uncertainty": "low"
+        }
+      ]
+    },
+    {
+      "datasetId": "names.suker",
+      "version": "1.0.0",
+      "languageId": "language.suker",
+      "title": "Suker personal names",
+      "license": "CC0-1.0 (authored for this project)",
+      "provenance": {
+        "kind": "authored",
+        "generator": "civ-namegen 1.0.0 (packages/content/scripts/build-season-one.mjs)",
+        "specDigest": "sha256:caef0335398ac8fdc21f88ca5b1f25c16e4502368265517b260e5944f6072767",
+        "notes": "Constructed language; names generated from the phonology spec and frozen. Eras are authored fashion intervals of the fictional world, not historical attestations."
+      },
+      "entries": [
+        {
+          "entryId": "suk.g.f.0001",
+          "form": "namaymi",
+          "display": "Namaymi",
+          "usage": "given",
+          "applicability": "female",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 1000,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "suk.g.f.0002",
+          "form": "kinkonmi",
+          "display": "Kinkonmi",
+          "usage": "given",
+          "applicability": "female",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 574,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "suk.g.m.0001",
+          "form": "turuksu",
+          "display": "Turuksu",
+          "usage": "given",
+          "applicability": "male",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 1000,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "suk.g.m.0002",
+          "form": "titsu",
+          "display": "Titsu",
+          "usage": "given",
+          "applicability": "male",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 574,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "suk.g.a.0001",
+          "form": "yorukun",
+          "display": "Yorukun",
+          "usage": "given",
+          "applicability": "any",
+          "eraFrom": null,
+          "eraTo": -60,
+          "weight": 1000,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "suk.g.a.0004",
+          "form": "keetki",
+          "display": "Keetki",
+          "usage": "given",
+          "applicability": "any",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 330,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "suk.g.a.0006",
+          "form": "muhki",
+          "display": "Muhki",
+          "usage": "given",
+          "applicability": "any",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 238,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "suk.p.a.0001",
+          "form": "makun",
+          "display": "Makun",
+          "usage": "place",
+          "applicability": "any",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 1000,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "suk.p.a.0002",
+          "form": "sakun",
+          "display": "Sakun",
+          "usage": "place",
+          "applicability": "any",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 574,
+          "uncertainty": "low"
+        }
+      ]
+    },
+    {
+      "datasetId": "names.orvath",
+      "version": "1.0.0",
+      "languageId": "language.orvath",
+      "title": "Orvath personal and clan names",
+      "license": "CC0-1.0 (authored for this project)",
+      "provenance": {
+        "kind": "authored",
+        "generator": "civ-namegen 1.0.0 (packages/content/scripts/build-season-one.mjs)",
+        "specDigest": "sha256:d180ae7a89b166ed3ba58d6cfbbc34019518f4b07655a52322d37c05e7bb5ed1",
+        "notes": "Constructed language; names generated from the phonology spec and frozen. Eras are authored fashion intervals of the fictional world, not historical attestations."
+      },
+      "entries": [
+        {
+          "entryId": "orv.g.f.0001",
+          "form": "verdavuna",
+          "display": "Verdavuna",
+          "usage": "given",
+          "applicability": "female",
+          "eraFrom": null,
+          "eraTo": -55,
+          "weight": 1000,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "orv.g.f.0002",
+          "form": "kedkraketh",
+          "display": "Kedkraketh",
+          "usage": "given",
+          "applicability": "female",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 574,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "orv.g.f.0005",
+          "form": "gukvia",
+          "display": "Gukvia",
+          "usage": "given",
+          "applicability": "female",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 276,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "orv.g.m.0001",
+          "form": "gyrdorok",
+          "display": "Gyrdorok",
+          "usage": "given",
+          "applicability": "male",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 1000,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "orv.g.m.0004",
+          "form": "thokroth",
+          "display": "Thokroth",
+          "usage": "given",
+          "applicability": "male",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 330,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "orv.g.a.0001",
+          "form": "thegek",
+          "display": "Thegek",
+          "usage": "given",
+          "applicability": "any",
+          "eraFrom": null,
+          "eraTo": 548,
+          "weight": 1000,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "orv.g.a.0004",
+          "form": "vuthkebruv",
+          "display": "Vuthkebruv",
+          "usage": "given",
+          "applicability": "any",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 330,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "orv.g.a.0008",
+          "form": "kybruv",
+          "display": "Kybruv",
+          "usage": "given",
+          "applicability": "any",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 189,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "orv.c.a.0001",
+          "form": "vokrudra",
+          "display": "Vokrudra",
+          "usage": "clan",
+          "applicability": "any",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 1000,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "orv.c.a.0002",
+          "form": "gagra",
+          "display": "Gagra",
+          "usage": "clan",
+          "applicability": "any",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 574,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "orv.p.a.0001",
+          "form": "vovra",
+          "display": "Vovra",
+          "usage": "place",
+          "applicability": "any",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 1000,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "orv.p.a.0002",
+          "form": "kektheduv",
+          "display": "Kektheduv",
+          "usage": "place",
+          "applicability": "any",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 574,
+          "uncertainty": "low"
+        }
+      ]
+    },
+    {
+      "datasetId": "names.daeth",
+      "version": "1.0.0",
+      "languageId": "language.daeth",
+      "title": "Daeth personal and place names",
+      "license": "CC0-1.0 (authored for this project)",
+      "provenance": {
+        "kind": "authored",
+        "generator": "civ-namegen 1.0.0 (packages/content/scripts/build-season-one.mjs)",
+        "specDigest": "sha256:8c47ce6eab3992b8acf273aaf47a5b0fd6b64bc949dbaf27dc66f50cfa9a1d30",
+        "notes": "Constructed language; names generated from the phonology spec and frozen. Eras are authored fashion intervals of the fictional world, not historical attestations."
+      },
+      "entries": [
+        {
+          "entryId": "dae.g.f.0001",
+          "form": "domela",
+          "display": "Domela",
+          "usage": "given",
+          "applicability": "female",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 1000,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "dae.g.f.0004",
+          "form": "hanaelai",
+          "display": "Hanaelai",
+          "usage": "given",
+          "applicability": "female",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 330,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "dae.g.m.0001",
+          "form": "mishohar",
+          "display": "Mishohar",
+          "usage": "given",
+          "applicability": "male",
+          "eraFrom": null,
+          "eraTo": 550,
+          "weight": 1000,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "dae.g.m.0015",
+          "form": "lehanom",
+          "display": "Lehanom",
+          "usage": "given",
+          "applicability": "male",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 115,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "dae.g.m.0017",
+          "form": "bezshodid",
+          "display": "Bezshodid",
+          "usage": "given",
+          "applicability": "male",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 104,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "dae.g.a.0001",
+          "form": "nedaeben",
+          "display": "Nedaeben",
+          "usage": "given",
+          "applicability": "any",
+          "eraFrom": null,
+          "eraTo": 723,
+          "weight": 1000,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "dae.g.a.0004",
+          "form": "shaiden",
+          "display": "Shaiden",
+          "usage": "given",
+          "applicability": "any",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 330,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "dae.g.a.0005",
+          "form": "lino",
+          "display": "Lino",
+          "usage": "given",
+          "applicability": "any",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 276,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "dae.p.a.0001",
+          "form": "binlahai",
+          "display": "Binlahai",
+          "usage": "place",
+          "applicability": "any",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 1000,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "dae.p.a.0002",
+          "form": "babo",
+          "display": "Babo",
+          "usage": "place",
+          "applicability": "any",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 574,
+          "uncertainty": "low"
+        }
+      ]
+    },
+    {
+      "datasetId": "names.ilun",
+      "version": "1.0.0",
+      "languageId": "language.ilun",
+      "title": "Ilun personal and clan names",
+      "license": "CC0-1.0 (authored for this project)",
+      "provenance": {
+        "kind": "authored",
+        "generator": "civ-namegen 1.0.0 (packages/content/scripts/build-season-one.mjs)",
+        "specDigest": "sha256:e4545461161c35ed335181b6e1d607a8b755ed1f313da2d50291fd7667b0aedf",
+        "notes": "Constructed language; names generated from the phonology spec and frozen. Eras are authored fashion intervals of the fictional world, not historical attestations."
+      },
+      "entries": [
+        {
+          "entryId": "ilu.g.f.0001",
+          "form": "fililana",
+          "display": "Fililana",
+          "usage": "given",
+          "applicability": "female",
+          "eraFrom": null,
+          "eraTo": 622,
+          "weight": 1000,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "ilu.g.f.0004",
+          "form": "linana",
+          "display": "Linana",
+          "usage": "given",
+          "applicability": "female",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 330,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "ilu.g.f.0005",
+          "form": "elui",
+          "display": "Elui",
+          "usage": "given",
+          "applicability": "female",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 276,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "ilu.g.m.0001",
+          "form": "infinel",
+          "display": "Infinel",
+          "usage": "given",
+          "applicability": "male",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 1000,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "ilu.g.m.0002",
+          "form": "awilel",
+          "display": "Awilel",
+          "usage": "given",
+          "applicability": "male",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 574,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "ilu.g.a.0001",
+          "form": "litipi",
+          "display": "Litipi",
+          "usage": "given",
+          "applicability": "any",
+          "eraFrom": null,
+          "eraTo": -52,
+          "weight": 1000,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "ilu.g.a.0002",
+          "form": "tatilawa",
+          "display": "Tatilawa",
+          "usage": "given",
+          "applicability": "any",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 574,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "ilu.g.a.0003",
+          "form": "tupali",
+          "display": "Tupali",
+          "usage": "given",
+          "applicability": "any",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 415,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "ilu.c.a.0001",
+          "form": "lului",
+          "display": "Lului",
+          "usage": "clan",
+          "applicability": "any",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 1000,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "ilu.c.a.0002",
+          "form": "winwefawa",
+          "display": "Winwefawa",
+          "usage": "clan",
+          "applicability": "any",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 574,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "ilu.p.a.0001",
+          "form": "ifulitawa",
+          "display": "Ifulitawa",
+          "usage": "place",
+          "applicability": "any",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 1000,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "ilu.p.a.0002",
+          "form": "tinlini",
+          "display": "Tinlini",
+          "usage": "place",
+          "applicability": "any",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 574,
+          "uncertainty": "low"
+        }
+      ]
+    },
+    {
+      "datasetId": "names.coastal_family",
+      "version": "1.0.0",
+      "languageId": "language.coastal_family",
+      "title": "Coastal family shared names",
+      "license": "CC0-1.0 (authored for this project)",
+      "provenance": {
+        "kind": "authored",
+        "generator": "civ-namegen 1.0.0 (packages/content/scripts/build-season-one.mjs)",
+        "specDigest": "sha256:b78d62060b8a549aeb8d0934df58567b746d7db888588bade3ce868dfb88cf25",
+        "notes": "Constructed language; names generated from the phonology spec and frozen. Eras are authored fashion intervals of the fictional world, not historical attestations."
+      },
+      "entries": [
+        {
+          "entryId": "cof.g.f.0001",
+          "form": "katene",
+          "display": "Katene",
+          "usage": "given",
+          "applicability": "female",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 1000,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "cof.g.f.0002",
+          "form": "molene",
+          "display": "Molene",
+          "usage": "given",
+          "applicability": "female",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 574,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "cof.g.m.0001",
+          "form": "nato",
+          "display": "Nato",
+          "usage": "given",
+          "applicability": "male",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 1000,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "cof.g.m.0002",
+          "form": "raso",
+          "display": "Raso",
+          "usage": "given",
+          "applicability": "male",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 574,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "cof.g.a.0001",
+          "form": "mime",
+          "display": "Mime",
+          "usage": "given",
+          "applicability": "any",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 1000,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "cof.g.a.0002",
+          "form": "runlute",
+          "display": "Runlute",
+          "usage": "given",
+          "applicability": "any",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 574,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "cof.c.a.0001",
+          "form": "kate",
+          "display": "Kate",
+          "usage": "clan",
+          "applicability": "any",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 1000,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "cof.c.a.0002",
+          "form": "lale",
+          "display": "Lale",
+          "usage": "clan",
+          "applicability": "any",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 574,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "cof.p.a.0001",
+          "form": "tala",
+          "display": "Tala",
+          "usage": "place",
+          "applicability": "any",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 1000,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "cof.p.a.0002",
+          "form": "nura",
+          "display": "Nura",
+          "usage": "place",
+          "applicability": "any",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 574,
+          "uncertainty": "low"
+        }
+      ]
+    },
+    {
+      "datasetId": "names.highland_family",
+      "version": "1.0.0",
+      "languageId": "language.highland_family",
+      "title": "Highland family shared names",
+      "license": "CC0-1.0 (authored for this project)",
+      "provenance": {
+        "kind": "authored",
+        "generator": "civ-namegen 1.0.0 (packages/content/scripts/build-season-one.mjs)",
+        "specDigest": "sha256:0bbbc4c9ff980b6d77f085251449032571e9c74f19777a26f6c689d53509fb8c",
+        "notes": "Constructed language; names generated from the phonology spec and frozen. Eras are authored fashion intervals of the fictional world, not historical attestations."
+      },
+      "entries": [
+        {
+          "entryId": "hif.g.f.0001",
+          "form": "vorhukuna",
+          "display": "Vorhukuna",
+          "usage": "given",
+          "applicability": "female",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 1000,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "hif.g.f.0002",
+          "form": "keuhuna",
+          "display": "Keuhuna",
+          "usage": "given",
+          "applicability": "female",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 574,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "hif.g.m.0001",
+          "form": "rorerud",
+          "display": "Rorerud",
+          "usage": "given",
+          "applicability": "male",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 1000,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "hif.g.m.0002",
+          "form": "bedebud",
+          "display": "Bedebud",
+          "usage": "given",
+          "applicability": "male",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 574,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "hif.g.a.0001",
+          "form": "keren",
+          "display": "Keren",
+          "usage": "given",
+          "applicability": "any",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 1000,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "hif.g.a.0002",
+          "form": "koroho",
+          "display": "Koroho",
+          "usage": "given",
+          "applicability": "any",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 574,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "hif.c.a.0001",
+          "form": "redo",
+          "display": "Redo",
+          "usage": "clan",
+          "applicability": "any",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 1000,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "hif.c.a.0002",
+          "form": "odra",
+          "display": "Odra",
+          "usage": "clan",
+          "applicability": "any",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 574,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "hif.p.a.0001",
+          "form": "daneho",
+          "display": "Daneho",
+          "usage": "place",
+          "applicability": "any",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 1000,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "hif.p.a.0002",
+          "form": "deben",
+          "display": "Deben",
+          "usage": "place",
+          "applicability": "any",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 574,
+          "uncertainty": "low"
+        }
+      ]
+    },
+    {
+      "datasetId": "names.shared",
+      "version": "1.0.0",
+      "languageId": "language.shared",
+      "title": "Pan-regional fallback names",
+      "license": "CC0-1.0 (authored for this project)",
+      "provenance": {
+        "kind": "authored",
+        "generator": "civ-namegen 1.0.0 (packages/content/scripts/build-season-one.mjs)",
+        "specDigest": "sha256:cc22d08771aca2a5edc04f9a8b03da9eb5fa92e0da29ece4a63acd51ceb414a0",
+        "notes": "Constructed language; names generated from the phonology spec and frozen. Eras are authored fashion intervals of the fictional world, not historical attestations."
+      },
+      "entries": [
+        {
+          "entryId": "shr.g.f.0001",
+          "form": "lieli",
+          "display": "Lieli",
+          "usage": "given",
+          "applicability": "female",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 1000,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "shr.g.f.0002",
+          "form": "nema",
+          "display": "Nema",
+          "usage": "given",
+          "applicability": "female",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 574,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "shr.g.m.0001",
+          "form": "masetan",
+          "display": "Masetan",
+          "usage": "given",
+          "applicability": "male",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 1000,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "shr.g.m.0002",
+          "form": "elo",
+          "display": "Elo",
+          "usage": "given",
+          "applicability": "male",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 574,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "shr.g.a.0001",
+          "form": "nate",
+          "display": "Nate",
+          "usage": "given",
+          "applicability": "any",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 1000,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "shr.g.a.0002",
+          "form": "lakake",
+          "display": "Lakake",
+          "usage": "given",
+          "applicability": "any",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 574,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "shr.c.a.0001",
+          "form": "nenutu",
+          "display": "Nenutu",
+          "usage": "clan",
+          "applicability": "any",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 1000,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "shr.c.a.0002",
+          "form": "lamese",
+          "display": "Lamese",
+          "usage": "clan",
+          "applicability": "any",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 574,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "shr.p.a.0001",
+          "form": "kunsata",
+          "display": "Kunsata",
+          "usage": "place",
+          "applicability": "any",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 1000,
+          "uncertainty": "low"
+        },
+        {
+          "entryId": "shr.p.a.0002",
+          "form": "nana",
+          "display": "Nana",
+          "usage": "place",
+          "applicability": "any",
+          "eraFrom": null,
+          "eraTo": null,
+          "weight": 574,
+          "uncertainty": "low"
+        }
+      ]
+    }
+  ],
+  "demography": {
+    "tableId": "demography.preindustrial_e25",
+    "description": "Siler mortality (a1=0.48, b1=1.15, a2=0.0155, a3=0.0004, b3=0.085) giving e0 ≈ 24.6 years; Coale–Trussell natural fertility schedule; twin rate 1.2% and sex ratio at birth 1,050. All values are chosen defaults screened for plausibility, not fitted to data; disability prevalence is an uncalibrated default.",
+    "survivorsPpm": [
+      1000000,
+      739969,
+      665367,
+      636349,
+      620580,
+      608928,
+      598636,
+      588850,
+      579302,
+      569905,
+      560632,
+      551468,
+      542409,
+      533448,
+      524582,
+      515805,
+      507113,
+      498502,
+      489967,
+      481501,
+      473102,
+      464762,
+      456476,
+      448240,
+      440046,
+      431889,
+      423762,
+      415660,
+      407574,
+      399499,
+      391428,
+      383352,
+      375265,
+      367159,
+      359026,
+      350859,
+      342648,
+      334388,
+      326068,
+      317683,
+      309223,
+      300682,
+      292052,
+      283328,
+      274503,
+      265572,
+      256531,
+      247378,
+      238111,
+      228731,
+      219239,
+      209640,
+      199942,
+      190154,
+      180290,
+      170365,
+      160401,
+      150421,
+      140453,
+      130530,
+      120687,
+      110966,
+      101410,
+      92066,
+      82983,
+      74212,
+      65804,
+      57809,
+      50274,
+      43243,
+      36751,
+      30829,
+      25496,
+      20762,
+      16625,
+      13070,
+      10072,
+      7594,
+      5593,
+      4014,
+      2801,
+      1896,
+      1241,
+      784,
+      476,
+      277,
+      153,
+      81,
+      40,
+      19,
+      8,
+      3,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "naturalFertilityPpm": [
+      411000,
+      460000,
+      431000,
+      395000,
+      322000,
+      167000,
+      24000
+    ],
+    "twinPpm": 12000,
+    "sexRatioAtBirth": 1050,
+    "disabilityPpm": [
+      15000,
+      40000,
+      90000,
+      220000
+    ],
+    "citations": [
+      "src_coaledemeny1983",
+      "src_bagnallfrier1994",
+      "src_frier2000",
+      "src_coaletrussell1974"
+    ]
+  },
+  "citations": [
+    {
+      "sourceId": "src_coaledemeny1983",
+      "citation": "Coale, A. J., & Demeny, P. (1983). Regional Model Life Tables and Stable Populations (2nd ed.). Academic Press.",
+      "usedFor": "Range of pre-modern mortality levels (Model West levels 2–4) that the Siler parameters are chosen within."
+    },
+    {
+      "sourceId": "src_bagnallfrier1994",
+      "citation": "Bagnall, R. S., & Frier, B. W. (1994). The Demography of Roman Egypt. Cambridge University Press.",
+      "usedFor": "Plausible ancient life expectancy, household size and household composition used to check the seed report."
+    },
+    {
+      "sourceId": "src_frier2000",
+      "citation": "Frier, B. W. (2000). Demography. In The Cambridge Ancient History, Vol. XI (2nd ed., pp. 787–816). Cambridge University Press.",
+      "usedFor": "Life expectancy at birth of roughly 20–30 years for the early Roman Empire."
+    },
+    {
+      "sourceId": "src_coaletrussell1974",
+      "citation": "Coale, A. J., & Trussell, T. J. (1974). Model fertility schedules. Population Index, 40(2), 185–258.",
+      "usedFor": "Natural marital fertility schedule n(a) by five-year age group, scaled by each culture's level M."
+    },
+    {
+      "sourceId": "src_hammellaslett1974",
+      "citation": "Hammel, E. A., & Laslett, P. (1974). Comparing household structure over time and between cultures. Comparative Studies in Society and History, 16(1), 73–109.",
+      "usedFor": "Household form categories (solitary, nuclear, extended/stem, multiple/joint)."
+    }
+  ]
+}

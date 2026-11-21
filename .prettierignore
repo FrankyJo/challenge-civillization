@@ -14,3 +14,5 @@ packages/contracts/schemas
 packages/contracts/SCHEMAS.md
 # Frozen compatibility fixtures: bytes are checksummed and must never change
 packages/contracts/fixtures
+# Generated content packs (byte-checked against their build scripts)
+packages/content/src/packs

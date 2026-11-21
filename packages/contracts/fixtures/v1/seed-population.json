@@ -1,0 +1,915 @@
+{
+  "schemaVersion": 1,
+  "worldId": "wld_fixture0001",
+  "contentVersion": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+  "mapHash": "sha256:7d004b84a271b4e9bb10c4d689759096e7add82710666a690f790dc0491b6624",
+  "params": {
+    "size": 12,
+    "settlementCount": 2,
+    "settlementSpacing": 1
+  },
+  "regionCultures": [
+    "culture.sukeru",
+    "culture.velani",
+    "culture.orvathi"
+  ],
+  "settlements": [
+    {
+      "settlementId": "stl_433jkir6clznk0eu",
+      "cell": 46,
+      "regionId": "rgn_2pb0n50z88qpvgtb",
+      "cultureId": "culture.velani",
+      "name": {
+        "parts": [
+          {
+            "role": "place",
+            "form": "sotosa",
+            "provenance": {
+              "dataset": "names.coastal_family",
+              "version": "1.0.0",
+              "entryId": "cof.p.a.0021",
+              "fallbackLevel": 1
+            }
+          }
+        ],
+        "display": "Sotosa"
+      }
+    },
+    {
+      "settlementId": "stl_47zecaob72zdn7og",
+      "cell": 34,
+      "regionId": "rgn_1xhash0bieg4eekm",
+      "cultureId": "culture.sukeru",
+      "name": {
+        "parts": [
+          {
+            "role": "place",
+            "form": "makun",
+            "provenance": {
+              "dataset": "names.suker",
+              "version": "1.0.0",
+              "entryId": "suk.p.a.0001",
+              "fallbackLevel": 0
+            }
+          }
+        ],
+        "display": "Makun"
+      }
+    }
+  ],
+  "households": [
+    {
+      "householdId": "hhd_0bmozcj1pn3lfo1f",
+      "settlementId": "stl_433jkir6clznk0eu",
+      "form": "nuclear",
+      "headId": "per_3n0a54p612r932mu",
+      "members": [
+        {
+          "personId": "per_3n0a54p612r932mu",
+          "role": "head"
+        },
+        {
+          "personId": "per_3hs36evduzuzp7sg",
+          "role": "spouse"
+        },
+        {
+          "personId": "per_2ds8lfl1nmrwpuiz",
+          "role": "child"
+        },
+        {
+          "personId": "per_0beupu5q1t3pdh6z",
+          "role": "child"
+        },
+        {
+          "personId": "per_3lkhqn096vld5vut",
+          "role": "child"
+        },
+        {
+          "personId": "per_0rndokyi8saovjtd",
+          "role": "child"
+        },
+        {
+          "personId": "per_0iie7a0te2npll4e",
+          "role": "child"
+        }
+      ]
+    },
+    {
+      "householdId": "hhd_0e04cofacrren7ny",
+      "settlementId": "stl_47zecaob72zdn7og",
+      "form": "kin_care",
+      "headId": "per_223hfsadiqwswrx1",
+      "members": [
+        {
+          "personId": "per_223hfsadiqwswrx1",
+          "role": "head"
+        },
+        {
+          "personId": "per_2gqdr1d6yq586ev6",
+          "role": "grandchild"
+        },
+        {
+          "personId": "per_4hadwtp9minqnjig",
+          "role": "grandchild"
+        }
+      ]
+    },
+    {
+      "householdId": "hhd_058a489fq62peqv4",
+      "settlementId": "stl_47zecaob72zdn7og",
+      "form": "solitary",
+      "headId": "per_3ijxn2hkzfh2jkkg",
+      "members": [
+        {
+          "personId": "per_3ijxn2hkzfh2jkkg",
+          "role": "head"
+        }
+      ]
+    },
+    {
+      "householdId": "hhd_1te1xdm80oiijoyq",
+      "settlementId": "stl_47zecaob72zdn7og",
+      "form": "solitary",
+      "headId": "per_4lkb93kmkgoez28m",
+      "members": [
+        {
+          "personId": "per_4lkb93kmkgoez28m",
+          "role": "head"
+        }
+      ]
+    }
+  ],
+  "persons": [
+    {
+      "personId": "per_3n0a54p612r932mu",
+      "birthTick": -12854,
+      "sex": "male",
+      "gender": {
+        "category": "man",
+        "status": "recorded"
+      },
+      "cultureId": "culture.velani",
+      "householdId": "hhd_0bmozcj1pn3lfo1f",
+      "settlementId": "stl_433jkir6clznk0eu",
+      "cell": 46,
+      "motherId": null,
+      "fatherId": null,
+      "partnerId": "per_3hs36evduzuzp7sg",
+      "maritalStatus": "married",
+      "guardian": null,
+      "health": {
+        "frailtyPpm": 1422756,
+        "disability": "none"
+      },
+      "capabilities": {
+        "workCapacityPpm": 1000000,
+        "skills": {
+          "cultivation": 68,
+          "herding": 13,
+          "fishing": 18,
+          "craft": 6,
+          "building": 23,
+          "trade": 13,
+          "healing": 2
+        }
+      },
+      "name": {
+        "parts": [
+          {
+            "role": "given",
+            "form": "nali",
+            "provenance": {
+              "dataset": "names.velan",
+              "version": "1.0.0",
+              "entryId": "vel.g.a.0003",
+              "fallbackLevel": 0
+            }
+          },
+          {
+            "role": "patronymic",
+            "form": "sadoan",
+            "provenance": {
+              "rule": "patronymic",
+              "from": "father",
+              "personId": null,
+              "base": {
+                "dataset": "names.velan",
+                "version": "1.0.0",
+                "entryId": "vel.g.m.0013",
+                "fallbackLevel": 0
+              }
+            }
+          }
+        ],
+        "display": "Nali Sadoan"
+      }
+    },
+    {
+      "personId": "per_3hs36evduzuzp7sg",
+      "birthTick": -12200,
+      "sex": "female",
+      "gender": {
+        "category": "woman",
+        "status": "recorded"
+      },
+      "cultureId": "culture.velani",
+      "householdId": "hhd_0bmozcj1pn3lfo1f",
+      "settlementId": "stl_433jkir6clznk0eu",
+      "cell": 46,
+      "motherId": null,
+      "fatherId": null,
+      "partnerId": "per_3n0a54p612r932mu",
+      "maritalStatus": "married",
+      "guardian": null,
+      "health": {
+        "frailtyPpm": 812694,
+        "disability": "none"
+      },
+      "capabilities": {
+        "workCapacityPpm": 1000000,
+        "skills": {
+          "cultivation": 50,
+          "herding": 22,
+          "fishing": 4,
+          "craft": 29,
+          "building": 19,
+          "trade": 31,
+          "healing": 14
+        }
+      },
+      "name": {
+        "parts": [
+          {
+            "role": "given",
+            "form": "nali",
+            "provenance": {
+              "dataset": "names.velan",
+              "version": "1.0.0",
+              "entryId": "vel.g.a.0003",
+              "fallbackLevel": 0
+            }
+          },
+          {
+            "role": "patronymic",
+            "form": "ledeinanith",
+            "provenance": {
+              "rule": "patronymic",
+              "from": "father",
+              "personId": null,
+              "base": {
+                "dataset": "names.velan",
+                "version": "1.0.0",
+                "entryId": "vel.g.m.0011",
+                "fallbackLevel": 0
+              }
+            }
+          }
+        ],
+        "display": "Nali Ledeinanith"
+      }
+    },
+    {
+      "personId": "per_2ds8lfl1nmrwpuiz",
+      "birthTick": -4364,
+      "sex": "male",
+      "gender": {
+        "category": "man",
+        "status": "recorded"
+      },
+      "cultureId": "culture.velani",
+      "householdId": "hhd_0bmozcj1pn3lfo1f",
+      "settlementId": "stl_433jkir6clznk0eu",
+      "cell": 46,
+      "motherId": "per_3hs36evduzuzp7sg",
+      "fatherId": "per_3n0a54p612r932mu",
+      "partnerId": null,
+      "maritalStatus": "never_married",
+      "guardian": {
+        "kind": "parent",
+        "guardianId": "per_3hs36evduzuzp7sg",
+        "relation": "mother"
+      },
+      "health": {
+        "frailtyPpm": 919073,
+        "disability": "none"
+      },
+      "capabilities": {
+        "workCapacityPpm": 450000,
+        "skills": {
+          "cultivation": 3,
+          "herding": 4,
+          "fishing": 3,
+          "craft": 1,
+          "building": 1,
+          "trade": 7,
+          "healing": 1
+        }
+      },
+      "name": {
+        "parts": [
+          {
+            "role": "given",
+            "form": "denlises",
+            "provenance": {
+              "dataset": "names.velan",
+              "version": "1.0.0",
+              "entryId": "vel.g.a.0001",
+              "fallbackLevel": 0
+            }
+          },
+          {
+            "role": "patronymic",
+            "form": "nalian",
+            "provenance": {
+              "rule": "patronymic",
+              "from": "father",
+              "personId": "per_3n0a54p612r932mu",
+              "base": null
+            }
+          }
+        ],
+        "display": "Denlises Nalian"
+      }
+    },
+    {
+      "personId": "per_0beupu5q1t3pdh6z",
+      "birthTick": -3385,
+      "sex": "male",
+      "gender": {
+        "category": "man",
+        "status": "recorded"
+      },
+      "cultureId": "culture.velani",
+      "householdId": "hhd_0bmozcj1pn3lfo1f",
+      "settlementId": "stl_433jkir6clznk0eu",
+      "cell": 46,
+      "motherId": "per_3hs36evduzuzp7sg",
+      "fatherId": "per_3n0a54p612r932mu",
+      "partnerId": null,
+      "maritalStatus": "never_married",
+      "guardian": {
+        "kind": "parent",
+        "guardianId": "per_3hs36evduzuzp7sg",
+        "relation": "mother"
+      },
+      "health": {
+        "frailtyPpm": 981653,
+        "disability": "none"
+      },
+      "capabilities": {
+        "workCapacityPpm": 150000,
+        "skills": {
+          "cultivation": 2,
+          "herding": 0,
+          "fishing": 2,
+          "craft": 1,
+          "building": 0,
+          "trade": 5,
+          "healing": 0
+        }
+      },
+      "name": {
+        "parts": [
+          {
+            "role": "given",
+            "form": "nolsaevel",
+            "provenance": {
+              "dataset": "names.velan",
+              "version": "1.0.0",
+              "entryId": "vel.g.m.0042",
+              "fallbackLevel": 0
+            }
+          },
+          {
+            "role": "patronymic",
+            "form": "nalian",
+            "provenance": {
+              "rule": "patronymic",
+              "from": "father",
+              "personId": "per_3n0a54p612r932mu",
+              "base": null
+            }
+          }
+        ],
+        "display": "Nolsaevel Nalian"
+      }
+    },
+    {
+      "personId": "per_3lkhqn096vld5vut",
+      "birthTick": -2515,
+      "sex": "male",
+      "gender": {
+        "category": "man",
+        "status": "recorded"
+      },
+      "cultureId": "culture.velani",
+      "householdId": "hhd_0bmozcj1pn3lfo1f",
+      "settlementId": "stl_433jkir6clznk0eu",
+      "cell": 46,
+      "motherId": "per_3hs36evduzuzp7sg",
+      "fatherId": "per_3n0a54p612r932mu",
+      "partnerId": null,
+      "maritalStatus": "never_married",
+      "guardian": {
+        "kind": "parent",
+        "guardianId": "per_3hs36evduzuzp7sg",
+        "relation": "mother"
+      },
+      "health": {
+        "frailtyPpm": 1191372,
+        "disability": "none"
+      },
+      "capabilities": {
+        "workCapacityPpm": 150000,
+        "skills": {
+          "cultivation": 0,
+          "herding": 0,
+          "fishing": 0,
+          "craft": 0,
+          "building": 0,
+          "trade": 0,
+          "healing": 0
+        }
+      },
+      "name": {
+        "parts": [
+          {
+            "role": "given",
+            "form": "natado",
+            "provenance": {
+              "dataset": "names.velan",
+              "version": "1.0.0",
+              "entryId": "vel.g.m.0071",
+              "fallbackLevel": 0
+            }
+          },
+          {
+            "role": "patronymic",
+            "form": "nalian",
+            "provenance": {
+              "rule": "patronymic",
+              "from": "father",
+              "personId": "per_3n0a54p612r932mu",
+              "base": null
+            }
+          }
+        ],
+        "display": "Natado Nalian"
+      }
+    },
+    {
+      "personId": "per_0rndokyi8saovjtd",
+      "birthTick": -1974,
+      "sex": "female",
+      "gender": {
+        "category": "woman",
+        "status": "recorded"
+      },
+      "cultureId": "culture.velani",
+      "householdId": "hhd_0bmozcj1pn3lfo1f",
+      "settlementId": "stl_433jkir6clznk0eu",
+      "cell": 46,
+      "motherId": "per_3hs36evduzuzp7sg",
+      "fatherId": "per_3n0a54p612r932mu",
+      "partnerId": null,
+      "maritalStatus": "never_married",
+      "guardian": {
+        "kind": "parent",
+        "guardianId": "per_3hs36evduzuzp7sg",
+        "relation": "mother"
+      },
+      "health": {
+        "frailtyPpm": 1110034,
+        "disability": "none"
+      },
+      "capabilities": {
+        "workCapacityPpm": 150000,
+        "skills": {
+          "cultivation": 0,
+          "herding": 0,
+          "fishing": 0,
+          "craft": 0,
+          "building": 0,
+          "trade": 0,
+          "healing": 0
+        }
+      },
+      "name": {
+        "parts": [
+          {
+            "role": "given",
+            "form": "nina",
+            "provenance": {
+              "dataset": "names.velan",
+              "version": "1.0.0",
+              "entryId": "vel.g.f.0005",
+              "fallbackLevel": 0
+            }
+          },
+          {
+            "role": "patronymic",
+            "form": "naliith",
+            "provenance": {
+              "rule": "patronymic",
+              "from": "father",
+              "personId": "per_3n0a54p612r932mu",
+              "base": null
+            }
+          }
+        ],
+        "display": "Nina Naliith"
+      }
+    },
+    {
+      "personId": "per_0iie7a0te2npll4e",
+      "birthTick": -788,
+      "sex": "male",
+      "gender": {
+        "category": "man",
+        "status": "recorded"
+      },
+      "cultureId": "culture.velani",
+      "householdId": "hhd_0bmozcj1pn3lfo1f",
+      "settlementId": "stl_433jkir6clznk0eu",
+      "cell": 46,
+      "motherId": "per_3hs36evduzuzp7sg",
+      "fatherId": "per_3n0a54p612r932mu",
+      "partnerId": null,
+      "maritalStatus": "never_married",
+      "guardian": {
+        "kind": "parent",
+        "guardianId": "per_3hs36evduzuzp7sg",
+        "relation": "mother"
+      },
+      "health": {
+        "frailtyPpm": 1011192,
+        "disability": "none"
+      },
+      "capabilities": {
+        "workCapacityPpm": 0,
+        "skills": {
+          "cultivation": 0,
+          "herding": 0,
+          "fishing": 0,
+          "craft": 0,
+          "building": 0,
+          "trade": 0,
+          "healing": 0
+        }
+      },
+      "name": {
+        "parts": [
+          {
+            "role": "given",
+            "form": "siseno",
+            "provenance": {
+              "dataset": "names.velan",
+              "version": "1.0.0",
+              "entryId": "vel.g.m.0027",
+              "fallbackLevel": 0
+            }
+          },
+          {
+            "role": "patronymic",
+            "form": "nalian",
+            "provenance": {
+              "rule": "patronymic",
+              "from": "father",
+              "personId": "per_3n0a54p612r932mu",
+              "base": null
+            }
+          }
+        ],
+        "display": "Siseno Nalian"
+      }
+    },
+    {
+      "personId": "per_223hfsadiqwswrx1",
+      "birthTick": -16839,
+      "sex": "female",
+      "gender": {
+        "category": "woman",
+        "status": "recorded"
+      },
+      "cultureId": "culture.sukeru",
+      "householdId": "hhd_0e04cofacrren7ny",
+      "settlementId": "stl_47zecaob72zdn7og",
+      "cell": 34,
+      "motherId": null,
+      "fatherId": null,
+      "partnerId": null,
+      "maritalStatus": "widowed",
+      "guardian": null,
+      "health": {
+        "frailtyPpm": 1043036,
+        "disability": "mobility"
+      },
+      "capabilities": {
+        "workCapacityPpm": 500000,
+        "skills": {
+          "cultivation": 38,
+          "herding": 1,
+          "fishing": 26,
+          "craft": 10,
+          "building": 3,
+          "trade": 10,
+          "healing": 1
+        }
+      },
+      "name": {
+        "parts": [
+          {
+            "role": "given",
+            "form": "muhki",
+            "provenance": {
+              "dataset": "names.suker",
+              "version": "1.0.0",
+              "entryId": "suk.g.a.0006",
+              "fallbackLevel": 0
+            }
+          },
+          {
+            "role": "matronymic",
+            "form": "kinkonminai",
+            "provenance": {
+              "rule": "matronymic",
+              "from": "mother",
+              "personId": null,
+              "base": {
+                "dataset": "names.suker",
+                "version": "1.0.0",
+                "entryId": "suk.g.f.0002",
+                "fallbackLevel": 0
+              }
+            }
+          }
+        ],
+        "display": "Muhki Kinkonminai"
+      }
+    },
+    {
+      "personId": "per_2gqdr1d6yq586ev6",
+      "birthTick": -1567,
+      "sex": "female",
+      "gender": {
+        "category": "woman",
+        "status": "recorded"
+      },
+      "cultureId": "culture.sukeru",
+      "householdId": "hhd_0e04cofacrren7ny",
+      "settlementId": "stl_47zecaob72zdn7og",
+      "cell": 34,
+      "motherId": null,
+      "fatherId": null,
+      "partnerId": null,
+      "maritalStatus": "never_married",
+      "guardian": {
+        "kind": "kin",
+        "guardianId": "per_223hfsadiqwswrx1",
+        "relation": "grandparent"
+      },
+      "health": {
+        "frailtyPpm": 1186320,
+        "disability": "none"
+      },
+      "capabilities": {
+        "workCapacityPpm": 0,
+        "skills": {
+          "cultivation": 0,
+          "herding": 0,
+          "fishing": 0,
+          "craft": 0,
+          "building": 0,
+          "trade": 0,
+          "healing": 0
+        }
+      },
+      "name": {
+        "parts": [
+          {
+            "role": "given",
+            "form": "namaymi",
+            "provenance": {
+              "dataset": "names.suker",
+              "version": "1.0.0",
+              "entryId": "suk.g.f.0001",
+              "fallbackLevel": 0
+            }
+          },
+          {
+            "role": "matronymic",
+            "form": "kohminai",
+            "provenance": {
+              "rule": "matronymic",
+              "from": "mother",
+              "personId": null,
+              "base": {
+                "dataset": "names.suker",
+                "version": "1.0.0",
+                "entryId": "suk.g.f.0007",
+                "fallbackLevel": 0
+              }
+            }
+          }
+        ],
+        "display": "Namaymi Kohminai"
+      }
+    },
+    {
+      "personId": "per_4hadwtp9minqnjig",
+      "birthTick": -667,
+      "sex": "female",
+      "gender": {
+        "category": "woman",
+        "status": "recorded"
+      },
+      "cultureId": "culture.sukeru",
+      "householdId": "hhd_0e04cofacrren7ny",
+      "settlementId": "stl_47zecaob72zdn7og",
+      "cell": 34,
+      "motherId": null,
+      "fatherId": null,
+      "partnerId": null,
+      "maritalStatus": "never_married",
+      "guardian": {
+        "kind": "kin",
+        "guardianId": "per_223hfsadiqwswrx1",
+        "relation": "grandparent"
+      },
+      "health": {
+        "frailtyPpm": 1460522,
+        "disability": "none"
+      },
+      "capabilities": {
+        "workCapacityPpm": 0,
+        "skills": {
+          "cultivation": 0,
+          "herding": 0,
+          "fishing": 0,
+          "craft": 0,
+          "building": 0,
+          "trade": 0,
+          "healing": 0
+        }
+      },
+      "name": {
+        "parts": [
+          {
+            "role": "given",
+            "form": "tukharya",
+            "provenance": {
+              "dataset": "names.suker",
+              "version": "1.0.0",
+              "entryId": "suk.g.f.0030",
+              "fallbackLevel": 0
+            }
+          },
+          {
+            "role": "matronymic",
+            "form": "kohminai",
+            "provenance": {
+              "rule": "matronymic",
+              "from": "mother",
+              "personId": null,
+              "base": {
+                "dataset": "names.suker",
+                "version": "1.0.0",
+                "entryId": "suk.g.f.0007",
+                "fallbackLevel": 0
+              }
+            }
+          }
+        ],
+        "display": "Tukharya Kohminai"
+      }
+    },
+    {
+      "personId": "per_3ijxn2hkzfh2jkkg",
+      "birthTick": -13378,
+      "sex": "female",
+      "gender": {
+        "category": "woman",
+        "status": "recorded"
+      },
+      "cultureId": "culture.sukeru",
+      "householdId": "hhd_058a489fq62peqv4",
+      "settlementId": "stl_47zecaob72zdn7og",
+      "cell": 34,
+      "motherId": null,
+      "fatherId": null,
+      "partnerId": null,
+      "maritalStatus": "widowed",
+      "guardian": null,
+      "health": {
+        "frailtyPpm": 1182175,
+        "disability": "none"
+      },
+      "capabilities": {
+        "workCapacityPpm": 1000000,
+        "skills": {
+          "cultivation": 43,
+          "herding": 20,
+          "fishing": 29,
+          "craft": 13,
+          "building": 18,
+          "trade": 8,
+          "healing": 11
+        }
+      },
+      "name": {
+        "parts": [
+          {
+            "role": "given",
+            "form": "koyusmi",
+            "provenance": {
+              "dataset": "names.suker",
+              "version": "1.0.0",
+              "entryId": "suk.g.f.0021",
+              "fallbackLevel": 0
+            }
+          },
+          {
+            "role": "matronymic",
+            "form": "soyenkinai",
+            "provenance": {
+              "rule": "matronymic",
+              "from": "mother",
+              "personId": null,
+              "base": {
+                "dataset": "names.suker",
+                "version": "1.0.0",
+                "entryId": "suk.g.a.0009",
+                "fallbackLevel": 0
+              }
+            }
+          }
+        ],
+        "display": "Koyusmi Soyenkinai"
+      }
+    },
+    {
+      "personId": "per_4lkb93kmkgoez28m",
+      "birthTick": -8684,
+      "sex": "male",
+      "gender": {
+        "category": "man",
+        "status": "recorded"
+      },
+      "cultureId": "culture.sukeru",
+      "householdId": "hhd_1te1xdm80oiijoyq",
+      "settlementId": "stl_47zecaob72zdn7og",
+      "cell": 34,
+      "motherId": null,
+      "fatherId": null,
+      "partnerId": null,
+      "maritalStatus": "never_married",
+      "guardian": null,
+      "health": {
+        "frailtyPpm": 704263,
+        "disability": "none"
+      },
+      "capabilities": {
+        "workCapacityPpm": 1000000,
+        "skills": {
+          "cultivation": 22,
+          "herding": 5,
+          "fishing": 4,
+          "craft": 8,
+          "building": 18,
+          "trade": 1,
+          "healing": 8
+        }
+      },
+      "name": {
+        "parts": [
+          {
+            "role": "given",
+            "form": "turuksu",
+            "provenance": {
+              "dataset": "names.suker",
+              "version": "1.0.0",
+              "entryId": "suk.g.m.0001",
+              "fallbackLevel": 0
+            }
+          },
+          {
+            "role": "matronymic",
+            "form": "kukunko",
+            "provenance": {
+              "rule": "matronymic",
+              "from": "mother",
+              "personId": null,
+              "base": {
+                "dataset": "names.suker",
+                "version": "1.0.0",
+                "entryId": "suk.g.a.0012",
+                "fallbackLevel": 0
+              }
+            }
+          }
+        ],
+        "display": "Turuksu Kukunko"
+      }
+    }
+  ]
+}

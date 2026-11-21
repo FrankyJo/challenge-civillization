@@ -1,0 +1,778 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "number",
+      "const": 1
+    },
+    "worldId": {
+      "type": "string",
+      "pattern": "^wld_[0-9a-z]{8,64}$"
+    },
+    "contentVersion": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "mapHash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "params": {
+      "type": "object",
+      "properties": {
+        "size": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000000
+        },
+        "settlementCount": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10000
+        },
+        "settlementSpacing": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20
+        }
+      },
+      "required": [
+        "size",
+        "settlementCount",
+        "settlementSpacing"
+      ],
+      "additionalProperties": false
+    },
+    "regionCultures": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^culture\\.[a-z][a-z0-9_]{1,31}$"
+      }
+    },
+    "settlements": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "settlementId": {
+            "type": "string",
+            "pattern": "^stl_[0-9a-z]{8,64}$"
+          },
+          "cell": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "regionId": {
+            "type": "string",
+            "pattern": "^rgn_[0-9a-z]{8,64}$"
+          },
+          "cultureId": {
+            "type": "string",
+            "pattern": "^culture\\.[a-z][a-z0-9_]{1,31}$"
+          },
+          "name": {
+            "type": "object",
+            "properties": {
+              "parts": {
+                "minItems": 1,
+                "maxItems": 4,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "role": {
+                      "type": "string",
+                      "enum": [
+                        "given",
+                        "patronymic",
+                        "matronymic",
+                        "clan",
+                        "place"
+                      ]
+                    },
+                    "form": {
+                      "type": "string",
+                      "pattern": "^[a-z]{2,32}$"
+                    },
+                    "provenance": {
+                      "anyOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "dataset": {
+                              "type": "string",
+                              "pattern": "^names\\.[a-z][a-z0-9_]{1,31}$"
+                            },
+                            "version": {
+                              "type": "string",
+                              "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?$"
+                            },
+                            "entryId": {
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 40
+                            },
+                            "fallbackLevel": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 4
+                            }
+                          },
+                          "required": [
+                            "dataset",
+                            "version",
+                            "entryId",
+                            "fallbackLevel"
+                          ],
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "rule": {
+                              "type": "string",
+                              "enum": [
+                                "patronymic",
+                                "matronymic",
+                                "clan"
+                              ]
+                            },
+                            "from": {
+                              "type": "string",
+                              "enum": [
+                                "father",
+                                "mother"
+                              ]
+                            },
+                            "personId": {
+                              "anyOf": [
+                                {
+                                  "type": "string",
+                                  "pattern": "^per_[0-9a-z]{8,64}$"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "base": {
+                              "anyOf": [
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "dataset": {
+                                      "type": "string",
+                                      "pattern": "^names\\.[a-z][a-z0-9_]{1,31}$"
+                                    },
+                                    "version": {
+                                      "type": "string",
+                                      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?$"
+                                    },
+                                    "entryId": {
+                                      "type": "string",
+                                      "minLength": 1,
+                                      "maxLength": 40
+                                    },
+                                    "fallbackLevel": {
+                                      "type": "integer",
+                                      "minimum": 0,
+                                      "maximum": 4
+                                    }
+                                  },
+                                  "required": [
+                                    "dataset",
+                                    "version",
+                                    "entryId",
+                                    "fallbackLevel"
+                                  ],
+                                  "additionalProperties": false
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            }
+                          },
+                          "required": [
+                            "rule",
+                            "from",
+                            "personId",
+                            "base"
+                          ],
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "rule": {
+                              "type": "string",
+                              "const": "place"
+                            },
+                            "settlementId": {
+                              "type": "string",
+                              "pattern": "^stl_[0-9a-z]{8,64}$"
+                            }
+                          },
+                          "required": [
+                            "rule",
+                            "settlementId"
+                          ],
+                          "additionalProperties": false
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "role",
+                    "form",
+                    "provenance"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "display": {
+                "type": "string",
+                "minLength": 2,
+                "maxLength": 120
+              }
+            },
+            "required": [
+              "parts",
+              "display"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "settlementId",
+          "cell",
+          "regionId",
+          "cultureId",
+          "name"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "households": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "householdId": {
+            "type": "string",
+            "pattern": "^hhd_[0-9a-z]{8,64}$"
+          },
+          "settlementId": {
+            "type": "string",
+            "pattern": "^stl_[0-9a-z]{8,64}$"
+          },
+          "form": {
+            "type": "string",
+            "enum": [
+              "nuclear",
+              "stem",
+              "joint",
+              "solitary",
+              "kin_care"
+            ]
+          },
+          "headId": {
+            "type": "string",
+            "pattern": "^per_[0-9a-z]{8,64}$"
+          },
+          "members": {
+            "minItems": 1,
+            "maxItems": 40,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "personId": {
+                  "type": "string",
+                  "pattern": "^per_[0-9a-z]{8,64}$"
+                },
+                "role": {
+                  "type": "string",
+                  "enum": [
+                    "head",
+                    "spouse",
+                    "child",
+                    "parent",
+                    "sibling",
+                    "grandchild",
+                    "fosterling"
+                  ]
+                }
+              },
+              "required": [
+                "personId",
+                "role"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "householdId",
+          "settlementId",
+          "form",
+          "headId",
+          "members"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "persons": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "personId": {
+            "type": "string",
+            "pattern": "^per_[0-9a-z]{8,64}$"
+          },
+          "birthTick": {
+            "type": "integer",
+            "minimum": -43800,
+            "maximum": 9007199254740991
+          },
+          "sex": {
+            "type": "string",
+            "enum": [
+              "female",
+              "male"
+            ]
+          },
+          "gender": {
+            "type": "object",
+            "properties": {
+              "category": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^[a-z][a-z_]{1,31}$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "recorded",
+                  "not_recorded"
+                ]
+              }
+            },
+            "required": [
+              "category",
+              "status"
+            ],
+            "additionalProperties": false
+          },
+          "cultureId": {
+            "type": "string",
+            "pattern": "^culture\\.[a-z][a-z0-9_]{1,31}$"
+          },
+          "householdId": {
+            "type": "string",
+            "pattern": "^hhd_[0-9a-z]{8,64}$"
+          },
+          "settlementId": {
+            "type": "string",
+            "pattern": "^stl_[0-9a-z]{8,64}$"
+          },
+          "cell": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "motherId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^per_[0-9a-z]{8,64}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "fatherId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^per_[0-9a-z]{8,64}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "partnerId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^per_[0-9a-z]{8,64}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "maritalStatus": {
+            "type": "string",
+            "enum": [
+              "never_married",
+              "married",
+              "widowed"
+            ]
+          },
+          "guardian": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "enum": [
+                      "parent",
+                      "kin",
+                      "foster"
+                    ]
+                  },
+                  "guardianId": {
+                    "type": "string",
+                    "pattern": "^per_[0-9a-z]{8,64}$"
+                  },
+                  "relation": {
+                    "type": "string",
+                    "enum": [
+                      "mother",
+                      "father",
+                      "grandparent",
+                      "sibling",
+                      "aunt_uncle",
+                      "step_parent",
+                      "foster_parent"
+                    ]
+                  }
+                },
+                "required": [
+                  "kind",
+                  "guardianId",
+                  "relation"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "health": {
+            "type": "object",
+            "properties": {
+              "frailtyPpm": {
+                "type": "integer",
+                "minimum": 100000,
+                "maximum": 5000000
+              },
+              "disability": {
+                "type": "string",
+                "enum": [
+                  "none",
+                  "mobility",
+                  "sensory",
+                  "cognitive"
+                ]
+              }
+            },
+            "required": [
+              "frailtyPpm",
+              "disability"
+            ],
+            "additionalProperties": false
+          },
+          "capabilities": {
+            "type": "object",
+            "properties": {
+              "workCapacityPpm": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 1000000
+              },
+              "skills": {
+                "type": "object",
+                "properties": {
+                  "cultivation": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 100
+                  },
+                  "herding": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 100
+                  },
+                  "fishing": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 100
+                  },
+                  "craft": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 100
+                  },
+                  "building": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 100
+                  },
+                  "trade": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 100
+                  },
+                  "healing": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 100
+                  }
+                },
+                "required": [
+                  "cultivation",
+                  "herding",
+                  "fishing",
+                  "craft",
+                  "building",
+                  "trade",
+                  "healing"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "workCapacityPpm",
+              "skills"
+            ],
+            "additionalProperties": false
+          },
+          "name": {
+            "type": "object",
+            "properties": {
+              "parts": {
+                "minItems": 1,
+                "maxItems": 4,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "role": {
+                      "type": "string",
+                      "enum": [
+                        "given",
+                        "patronymic",
+                        "matronymic",
+                        "clan",
+                        "place"
+                      ]
+                    },
+                    "form": {
+                      "type": "string",
+                      "pattern": "^[a-z]{2,32}$"
+                    },
+                    "provenance": {
+                      "anyOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "dataset": {
+                              "type": "string",
+                              "pattern": "^names\\.[a-z][a-z0-9_]{1,31}$"
+                            },
+                            "version": {
+                              "type": "string",
+                              "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?$"
+                            },
+                            "entryId": {
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 40
+                            },
+                            "fallbackLevel": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 4
+                            }
+                          },
+                          "required": [
+                            "dataset",
+                            "version",
+                            "entryId",
+                            "fallbackLevel"
+                          ],
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "rule": {
+                              "type": "string",
+                              "enum": [
+                                "patronymic",
+                                "matronymic",
+                                "clan"
+                              ]
+                            },
+                            "from": {
+                              "type": "string",
+                              "enum": [
+                                "father",
+                                "mother"
+                              ]
+                            },
+                            "personId": {
+                              "anyOf": [
+                                {
+                                  "type": "string",
+                                  "pattern": "^per_[0-9a-z]{8,64}$"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "base": {
+                              "anyOf": [
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "dataset": {
+                                      "type": "string",
+                                      "pattern": "^names\\.[a-z][a-z0-9_]{1,31}$"
+                                    },
+                                    "version": {
+                                      "type": "string",
+                                      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?$"
+                                    },
+                                    "entryId": {
+                                      "type": "string",
+                                      "minLength": 1,
+                                      "maxLength": 40
+                                    },
+                                    "fallbackLevel": {
+                                      "type": "integer",
+                                      "minimum": 0,
+                                      "maximum": 4
+                                    }
+                                  },
+                                  "required": [
+                                    "dataset",
+                                    "version",
+                                    "entryId",
+                                    "fallbackLevel"
+                                  ],
+                                  "additionalProperties": false
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            }
+                          },
+                          "required": [
+                            "rule",
+                            "from",
+                            "personId",
+                            "base"
+                          ],
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "rule": {
+                              "type": "string",
+                              "const": "place"
+                            },
+                            "settlementId": {
+                              "type": "string",
+                              "pattern": "^stl_[0-9a-z]{8,64}$"
+                            }
+                          },
+                          "required": [
+                            "rule",
+                            "settlementId"
+                          ],
+                          "additionalProperties": false
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "role",
+                    "form",
+                    "provenance"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "display": {
+                "type": "string",
+                "minLength": 2,
+                "maxLength": 120
+              }
+            },
+            "required": [
+              "parts",
+              "display"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "personId",
+          "birthTick",
+          "sex",
+          "gender",
+          "cultureId",
+          "householdId",
+          "settlementId",
+          "cell",
+          "motherId",
+          "fatherId",
+          "partnerId",
+          "maritalStatus",
+          "guardian",
+          "health",
+          "capabilities",
+          "name"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "worldId",
+    "contentVersion",
+    "mapHash",
+    "params",
+    "regionCultures",
+    "settlements",
+    "households",
+    "persons"
+  ],
+  "additionalProperties": false,
+  "title": "seed-population v1",
+  "description": "A world's initial living people with kinship, guardianship, households, settlements, health, capabilities and name provenance."
+}

@@ -18,7 +18,8 @@
     "typecheck": "tsc -p tsconfig.json",
     "test": "vitest run --dir src",
     "bench": "node bench/kernel.bench.mjs",
-    "bench:map": "node --expose-gc bench/map.bench.mjs"
+    "bench:map": "node --expose-gc bench/map.bench.mjs",
+    "bench:population": "node --expose-gc bench/population.bench.mjs"
   },
   "dependencies": {
     "@civ/contracts": "workspace:*"

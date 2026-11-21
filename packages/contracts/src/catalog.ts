@@ -3,6 +3,7 @@ import { apiErrorSchema } from "./api-error.js";
 import { checkpointSchema, eventCursorSchema, eventCursorStringSchema } from "./cursor.js";
 import { ledgerNotificationSchema } from "./delivery.js";
 import { mapParamsSchema, publicMapSnapshotSchema, worldMapSchema } from "./geography.js";
+import { contentPackSchema, seedPopulationSchema, worldDataSchema } from "./population.js";
 import { healthReportSchema } from "./health.js";
 import { commandRegistry, eventRegistry } from "./messages.js";
 import { proposalReviewSchema, proposalSchema, sourceRecordSchema } from "./proposal.js";
@@ -136,6 +137,29 @@ export const CONTRACT_CATALOG: readonly ContractEntry[] = Object.freeze([
     description:
       "Compact renderer-agnostic map projection: terrain, biome, elevation band, coast/river and regions only.",
     schema: publicMapSnapshotSchema,
+  },
+  {
+    name: "content-pack",
+    version: 1,
+    audience: "internal",
+    description:
+      "Versioned content pack: fictional cultures and naming systems, constructed-language name datasets with eras and provenance, demography table, citations.",
+    schema: contentPackSchema,
+  },
+  {
+    name: "seed-population",
+    version: 1,
+    audience: "internal",
+    description:
+      "A world's initial living people with kinship, guardianship, households, settlements, health, capabilities and name provenance.",
+    schema: seedPopulationSchema,
+  },
+  {
+    name: "world-data",
+    version: 1,
+    audience: "internal",
+    description: "Simulation-owned world state data: names the seed population by hash.",
+    schema: worldDataSchema,
   },
   {
     name: "api-error",

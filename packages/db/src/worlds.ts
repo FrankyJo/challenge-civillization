@@ -28,6 +28,7 @@ import {
   UnknownWorldError,
 } from "./errors.js";
 import { insertWorldMap, verifyWorldMap, type StoredWorldMap } from "./maps.js";
+import { insertWorldPopulation, verifyPopulation, type StoredPopulation } from "./populations.js";
 import { toIso, toSafeInt, withTransaction, type Queryable } from "./transaction.js";
 
 export const WORLD_STATE_SCHEMA_VERSION = 1 as const;
@@ -113,6 +114,8 @@ export interface CreateWorldInput {
   readonly checkpoint?: Checkpoint;
   /** The world's generated map and public snapshot (Phase 04); stored in the same transaction. */
   readonly map?: StoredWorldMap;
+  /** The seed population (Phase 05); requires `map`. Stored in the same transaction. */
+  readonly population?: StoredPopulation;
   readonly correlationId: string;
 }
 
@@ -138,6 +141,16 @@ export async function createWorld(pool: pg.Pool, input: CreateWorldInput): Promi
   if (map !== undefined && (map.document.worldId !== world.worldId || map.document.seed !== world.seed)) {
     throw new LedgerIntegrityError("the map must be generated for this world and its seed");
   }
+  const population = input.population === undefined ? undefined : verifyPopulation(input.population, "seed population");
+  if (population !== undefined) {
+    const doc = population.population;
+    if (map === undefined || doc.mapHash !== map.document.mapHash) {
+      throw new LedgerIntegrityError("the seed population must be stored with the map it was synthesized on");
+    }
+    if (doc.worldId !== world.worldId || doc.contentVersion !== world.versions.contentVersion) {
+      throw new LedgerIntegrityError("the seed population must belong to this world and its content version");
+    }
+  }
 
   try {
     await withTransaction(pool, async (client) => {
@@ -159,6 +172,7 @@ export async function createWorld(pool: pg.Pool, input: CreateWorldInput): Promi
       );
       await client.query("SELECT civ.ensure_event_partition($1)", [world.worldId]);
       if (map !== undefined) await insertWorldMap(client, map);
+      if (population !== undefined) await insertWorldPopulation(client, population);
       await client.query(
         `INSERT INTO civ.world_state
            (world_id, schema_version, clock, status, version, event_position, command_position, data, state_hash, versions)
@@ -184,6 +198,9 @@ export async function createWorld(pool: pg.Pool, input: CreateWorldInput): Promi
           stateHash: input.stateHash,
           versions: world.versions,
           ...(map === undefined ? {} : { mapHash: map.document.mapHash, mapVersion: map.document.mapVersion }),
+          ...(population === undefined
+            ? {}
+            : { populationHash: population.populationHash, living: population.population.persons.length }),
         },
       });
     });
