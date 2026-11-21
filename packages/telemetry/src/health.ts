@@ -89,12 +89,15 @@ export function livenessReport(service: ServiceName, version: string): HealthRep
 
 export interface HealthServerOptions extends HealthCheckOptions {
   readonly logger: Logger;
+  /** Prometheus text exposition served at GET /metrics (internal port only). */
+  readonly metrics?: () => string;
 }
 
 /**
  * Minimal HTTP server for non-API processes:
  *   GET /health        liveness (always 200 while the process serves)
  *   GET /health/ready  readiness (200 if every probe passes, otherwise 503)
+ *   GET /metrics       Prometheus text metrics, when `metrics` is given
  * Call `listen()` on the returned server.
  */
 export function createHealthServer(options: HealthServerOptions): Server {
@@ -128,6 +131,22 @@ export function createHealthServer(options: HealthServerOptions): Server {
           fail("internal");
         },
       );
+      return undefined;
+    }
+    if (path === "/metrics" && options.metrics !== undefined) {
+      let body: string;
+      try {
+        body = options.metrics();
+      } catch (error) {
+        options.logger.error({ err: error }, "metrics exposition failed");
+        return fail("internal");
+      }
+      res.writeHead(200, {
+        "content-type": "text/plain; version=0.0.4; charset=utf-8",
+        "cache-control": "no-store",
+        [CORRELATION_HEADER]: correlationId,
+      });
+      res.end(body);
       return undefined;
     }
     return fail("not_found");

@@ -21,6 +21,12 @@ export class AlreadyExistsError extends StoreError {}
  */
 export class StaleWriteError extends StoreError {}
 
+/**
+ * The writer no longer holds the world's lease (taken over, expired or never
+ * held): its fencing token is stale. Nothing was written; stop writing.
+ */
+export class FencingError extends StoreError {}
+
 /** The idempotency key or command ID was already used for a different request. */
 export class IdempotencyConflictError extends StoreError {}
 

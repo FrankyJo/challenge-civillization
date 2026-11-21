@@ -27,6 +27,7 @@ describe("loadMigrations", () => {
       "3:world_status_projection",
       "4:world_maps",
       "5:world_populations",
+      "6:world_runner",
     ]);
     expect(migrations[0]?.checksum).toBe(checksum(migrations[0]?.up ?? "", migrations[0]?.down ?? ""));
   });

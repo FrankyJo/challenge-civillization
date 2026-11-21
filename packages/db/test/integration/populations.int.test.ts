@@ -125,6 +125,7 @@ describe("seed populations", () => {
   });
 
   it("refuses to roll back 0005 while a population is stored", async () => {
+    expect(await migrateDown(pool)).toEqual([6]);
     await expect(migrateDown(pool)).rejects.toThrow(/refusing to roll back 0005/);
     expect((await loadWorldPopulation(pool, document.worldId)).populationHash).toBe(data.seedPopulationHash);
   });

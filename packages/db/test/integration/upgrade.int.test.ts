@@ -103,7 +103,7 @@ describe("migration upgrade paths", () => {
     const before = await snapshot(pool, script.world.worldId);
     expect(before.events.events).toHaveLength(4);
 
-    expect(await migrateUp(pool)).toEqual([3, 4, 5]);
+    expect(await migrateUp(pool)).toEqual([3, 4, 5, 6]);
     expect(await snapshot(pool, script.world.worldId)).toEqual(before);
     const maps = await pool.query("SELECT count(*)::int AS n FROM civ.world_maps");
     expect(maps.rows[0]).toEqual({ n: 0 });
@@ -117,7 +117,7 @@ describe("migration upgrade paths", () => {
     const script = await seedFixture(pool);
     const before = await snapshot(pool, script.world.worldId);
 
-    expect(await migrateDown(pool, { steps: 3 })).toEqual([5, 4, 3]);
+    expect(await migrateDown(pool, { steps: 4 })).toEqual([6, 5, 4, 3]);
     await expect(migrateDown(pool)).rejects.toThrow(/refusing to roll back 0002/);
     expect((await migrationStatus(pool)).map((row) => row.appliedAt !== null)).toEqual([
       true,
@@ -125,9 +125,10 @@ describe("migration upgrade paths", () => {
       false,
       false,
       false,
+      false,
     ]);
     expect(await snapshot(pool, script.world.worldId)).toEqual(before);
-    expect(await migrateUp(pool)).toEqual([3, 4, 5]);
+    expect(await migrateUp(pool)).toEqual([3, 4, 5, 6]);
   });
 
   it("refuses to roll back 0004 once a world map is stored", async () => {
@@ -146,7 +147,7 @@ describe("migration upgrade paths", () => {
       map: { document, snapshot: snapshotDto },
       correlationId: "fixture",
     });
-    expect(await migrateDown(pool)).toEqual([5]);
+    expect(await migrateDown(pool, { steps: 2 })).toEqual([6, 5]);
     await expect(migrateDown(pool)).rejects.toThrow(/refusing to roll back 0004/);
     expect((await loadWorldMap(pool, document.worldId)).document.mapHash).toBe(document.mapHash);
   });
@@ -155,7 +156,7 @@ describe("migration upgrade paths", () => {
     const pool = await freshDatabase();
     await migrateUp(pool);
     await seedFixture(pool);
-    expect(await resetDatabase(pool)).toEqual([1, 2, 3, 4, 5]);
+    expect(await resetDatabase(pool)).toEqual([1, 2, 3, 4, 5, 6]);
     const worlds = await pool.query("SELECT count(*)::int AS n FROM civ.worlds");
     expect(worlds.rows[0]).toEqual({ n: 0 });
   });

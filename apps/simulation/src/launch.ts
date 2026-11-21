@@ -25,6 +25,7 @@ import {
   type SystemSchedule,
 } from "@civ/domain";
 import { prepareGeography, type PreparedGeography } from "./geography.js";
+import { SEASON_ONE_SYSTEMS } from "./systems.js";
 
 export interface LaunchWorldInput {
   readonly pool: Pool;
@@ -34,7 +35,8 @@ export interface LaunchWorldInput {
   readonly createdAt: string;
   readonly createdBy: Actor;
   readonly correlationId: string;
-  readonly schedule: SystemSchedule<WorldData>;
+  /** System schedule (default: season one). It is part of the world's config version. */
+  readonly schedule?: SystemSchedule<WorldData>;
   readonly mapParams?: MapParams;
   readonly populationParams?: PopulationParams;
   /** Content pack and its version; season one by default. */
@@ -77,7 +79,7 @@ export async function launchWorld(input: LaunchWorldInput): Promise<LaunchedWorl
     seed: input.seed,
     span: SEASON_ONE_SPAN,
     contentVersion,
-    schedule: input.schedule,
+    schedule: input.schedule ?? SEASON_ONE_SYSTEMS,
     geography: geography.reference,
   });
   const data: WorldData = { schemaVersion: 1, seedPopulationHash: populationHash };

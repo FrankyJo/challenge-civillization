@@ -7,6 +7,7 @@ import {
   requestDigest,
   StaleWriteError,
   type CommandRecord,
+  type LeaseFence,
   type Pool,
 } from "@civ/db";
 import { canonicalHash, freezeWorldData, type Engine, type Rejection, type WorldState } from "@civ/domain";
@@ -28,6 +29,8 @@ export interface ProcessCommandOptions<S> {
    * caller (job retry) tries again later.
    */
   readonly maxAttempts?: number;
+  /** World lease fence: every commit is rejected (`FencingError`) unless this holder still holds the lease. */
+  readonly fence?: LeaseFence;
 }
 
 export type ProcessResult =
@@ -77,6 +80,7 @@ export async function processCommand<S>(options: ProcessCommandOptions<S>): Prom
           command,
           basedOn,
           outcome: { accepted: false, rejection: transition.rejection },
+          ...(options.fence === undefined ? {} : { fence: options.fence }),
         });
         return result.status === "duplicate"
           ? { status: "duplicate", record: result.record }
@@ -96,6 +100,7 @@ export async function processCommand<S>(options: ProcessCommandOptions<S>): Prom
           events: transition.events,
           ...(checkpoint === undefined ? {} : { checkpoint }),
         },
+        ...(options.fence === undefined ? {} : { fence: options.fence }),
       });
       return result.status === "duplicate"
         ? { status: "duplicate", record: result.record }

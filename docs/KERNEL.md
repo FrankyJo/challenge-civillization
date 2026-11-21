@@ -40,7 +40,7 @@ For a season `[startsAtMs, endsAtMs)` of `totalTicks` ticks:
 
 Both are computed from the origin with BigInt, so there is no accumulated drift, and all ticks are due exactly at `endsAtMs`. A 30 × 24 h season (`SEASON_DURATION_MS`) runs at about 1,027 ticks/hour on average, which is the product's ≈2.8139 years/hour.
 
-Pauses, catch-up ceilings and extensions are runner policy (Phase 06). They change the schedule; they never change this arithmetic.
+Pauses, catch-up ceilings and extensions are runner policy (Phase 06, `docs/RUNNER.md`). An extension re-anchors a schedule segment at the current clock and time with a later end (`extendSegment`). Each segment uses this same exact arithmetic from its own anchor.
 
 ## Random streams
 

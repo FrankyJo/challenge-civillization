@@ -22,6 +22,7 @@ import {
   UNIQUE_VIOLATION,
   UnknownWorldError,
 } from "./errors.js";
+import { assertFence, type LeaseFence } from "./runner.js";
 import { toSafeInt, withTransaction, type Queryable } from "./transaction.js";
 import {
   appendAudit,
@@ -54,6 +55,13 @@ export interface CommitCommandInput {
   /** Version and ledger position of the state the outcome was computed from. */
   readonly basedOn: { readonly version: number; readonly eventPosition: number };
   readonly outcome: CommandOutcome;
+  /**
+   * World lease fence (Phase 06). When given, the commit succeeds only if
+   * this holder still holds the world's lease with this token and it has not
+   * expired; the lease row is share-locked for the rest of the transaction,
+   * so a takeover waits for the commit and then sees it.
+   */
+  readonly fence?: LeaseFence;
 }
 
 /** One processed command as recorded in `civ.command_log`. */
@@ -223,6 +231,7 @@ export async function commitCommand(pool: pg.Pool, input: CommitCommandInput): P
       );
       if (current.rows[0] === undefined) throw new UnknownWorldError(`world ${command.worldId} does not exist`);
       const world = mapWorldState(current.rows[0]);
+      if (input.fence !== undefined) await assertFence(client, command.worldId, input.fence);
 
       const existing = await client.query<CommandRow>(
         `SELECT ${COMMAND_COLUMNS} FROM civ.command_log WHERE world_id = $1 AND idempotency_key = $2`,

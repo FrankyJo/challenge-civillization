@@ -15,7 +15,7 @@ import {
 } from "../../src/index.js";
 
 const adminUrl = requireTestEnv("TEST_DATABASE_URL");
-const ALL = [1, 2, 3, 4, 5];
+const ALL = [1, 2, 3, 4, 5, 6];
 
 let db: EphemeralDatabase | undefined;
 let pool: Pool | undefined;
@@ -68,6 +68,8 @@ describe("migration lifecycle against real PostgreSQL", () => {
     expect(status).toHaveLength(ALL.length);
     expect(status.every((row) => row.appliedAt instanceof Date)).toBe(true);
 
+    expect(await migrateDown(currentPool())).toEqual([6]);
+    expect(await tableExists("civ.world_runners")).toBe(false);
     expect(await migrateDown(currentPool())).toEqual([5]);
     expect(await tableExists("civ.world_populations")).toBe(false);
     expect(await migrateDown(currentPool())).toEqual([4]);
@@ -92,15 +94,15 @@ describe("migration lifecycle against real PostgreSQL", () => {
 
   it("rolls back a failing migration atomically and records nothing", async () => {
     const dir = await copyMigrations({
-      "0006_broken.up.sql": "CREATE TABLE civ.half_done (id int); SELECT * FROM civ.does_not_exist;",
-      "0006_broken.down.sql": "DROP TABLE civ.half_done;",
+      "0007_broken.up.sql": "CREATE TABLE civ.half_done (id int); SELECT * FROM civ.does_not_exist;",
+      "0007_broken.down.sql": "DROP TABLE civ.half_done;",
     });
     await expect(migrateUp(currentPool(), { dir })).rejects.toThrow(
-      /migration 6 \(broken\) up failed and was rolled back/,
+      /migration 7 \(broken\) up failed and was rolled back/,
     );
     expect(await tableExists("civ.half_done")).toBe(false);
     const status = await migrationStatus(currentPool(), { dir });
-    expect(status.map((s) => s.appliedAt !== null)).toEqual([true, true, true, true, true, false]);
+    expect(status.map((s) => s.appliedAt !== null)).toEqual([true, true, true, true, true, true, false]);
   });
 
   it("refuses to run when an applied migration was edited", async () => {
@@ -113,12 +115,12 @@ describe("migration lifecycle against real PostgreSQL", () => {
 
   it("refuses to run when the database is ahead of the code", async () => {
     const dir = await copyMigrations({
-      "0006_extra.up.sql": "CREATE TABLE civ.extra (id int);",
-      "0006_extra.down.sql": "DROP TABLE civ.extra;",
+      "0007_extra.up.sql": "CREATE TABLE civ.extra (id int);",
+      "0007_extra.down.sql": "DROP TABLE civ.extra;",
     });
     await migrateUp(currentPool(), { dir });
     await expect(migrateUp(currentPool())).rejects.toThrow(/not on disk/);
-    expect(await migrateDown(currentPool(), { dir, steps: 6 })).toEqual([6, 5, 4, 3, 2, 1]);
+    expect(await migrateDown(currentPool(), { dir, steps: 7 })).toEqual([7, 6, 5, 4, 3, 2, 1]);
   });
 
   it("detects edits to an applied down script", async () => {
@@ -130,14 +132,14 @@ describe("migration lifecycle against real PostgreSQL", () => {
 
   it("refuses to run over a gap in recorded history", async () => {
     const dir = await copyMigrations({
-      "0006_six.up.sql": "SELECT 6;",
-      "0006_six.down.sql": "SELECT 6;",
       "0007_seven.up.sql": "SELECT 7;",
       "0007_seven.down.sql": "SELECT 7;",
+      "0008_eight.up.sql": "SELECT 8;",
+      "0008_eight.down.sql": "SELECT 8;",
     });
     await migrateUp(currentPool(), { dir });
-    await currentPool().query("DELETE FROM public.schema_migrations WHERE version = 6");
-    await expect(migrateUp(currentPool(), { dir })).rejects.toThrow(/gap: expected version 6 but found 7/);
+    await currentPool().query("DELETE FROM public.schema_migrations WHERE version = 7");
+    await expect(migrateUp(currentPool(), { dir })).rejects.toThrow(/gap: expected version 7 but found 8/);
   });
 
   it("status is read-only on a fresh database", async () => {

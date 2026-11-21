@@ -2,7 +2,7 @@
 
 Executable source:
 
-- `packages/db/migrations/0002_authoritative_store.*.sql`, `0003_world_status_projection.*.sql`, `0004_world_maps.*.sql`, `0005_world_populations.*.sql`;
+- `packages/db/migrations/0002_authoritative_store.*.sql`, `0003_world_status_projection.*.sql`, `0004_world_maps.*.sql`, `0005_world_populations.*.sql`, `0006_world_runner.*.sql`;
 - `packages/db/src` (repositories, transactions, outbox, consumers);
 - `apps/simulation/src/command-processor.ts` (load → apply → commit);
 - `apps/worker/src/ledger.ts`, `world-status.ts` (relay, consumer, reconciler, first projection).
@@ -28,6 +28,8 @@ PostgreSQL is the only holder of authoritative facts. Redis/BullMQ carries notif
 | `proj_world_status` | first projection (non-authoritative, rebuildable) | upserted by its consumer |
 | `world_maps` | the world's generated map document and public snapshot (`docs/GEOGRAPHY.md`) | append-only; written in the world's creation transaction |
 | `world_populations` | the world's seed population document (`docs/POPULATION.md`) | append-only; written in the world's creation transaction |
+| `world_runners` | world lease (holder, fencing token, expiry), schedule segment, catch-up ceiling and runner status (`docs/RUNNER.md`) | token and anchor move forward only; never deleted |
+| `runner_controls` | queued operator controls and their final decisions | decided exactly once; never deleted |
 
 **Append-only enforcement.** A shared trigger function `civ.reject_mutation()` raises SQLSTATE `23001` on `UPDATE`, `DELETE` and `TRUNCATE` of every append-only table and of every ledger partition. Row triggers are cloned onto new partitions automatically; `civ.ensure_event_partition` adds the statement-level `TRUNCATE` trigger to each new partition. The repositories expose no operation that updates or deletes facts (asserted by a test). DDL (`DROP TABLE`, `DETACH PARTITION`, `ALTER TABLE … DISABLE TRIGGER`) and `session_replication_role = replica` bypass triggers. In shared environments the application role must therefore not own the schema or be a superuser, and must hold only `SELECT, INSERT` on append-only tables (Phase 24 provisions roles; recorded as a remaining risk).
 
@@ -41,7 +43,7 @@ PostgreSQL is the only holder of authoritative facts. Redis/BullMQ carries notif
 2. Look up `(world_id, idempotency_key)` in `command_log`.
    - Found, same request digest → return `duplicate` with the original record. Nothing is written.
    - Found, different digest → `IdempotencyConflictError`.
-3. If `world_state.version` / `event_position` differ from `basedOn` → `StaleWriteError`. Nothing is written.
+3. If `world_state.version` / `event_position` differ from `basedOn` → `StaleWriteError`. Nothing is written. With a `fence` (runner commits), the world's lease row is share-locked first, and a stale, foreign or expired token → `FencingError`.
 4. Insert the `command_log` row at `position = command_position`.
 5. Accepted outcomes only:
    - bulk-insert the events (`unnest`);
@@ -132,12 +134,13 @@ The reconciler rebuilds it from position 0. Authoritative tables are never edite
 | 0003 `world_status_projection` | `proj_world_status` | new table only | `down` drops the projection and its cursors (rebuildable) |
 | 0004 `world_maps` | `world_maps` with append-only triggers and CHECKs tying both documents to `map_hash` | new table only | `down` refuses (55000) once any map is stored; roll forward instead |
 | 0005 `world_populations` | `world_populations` with append-only triggers and CHECKs (world, content version, map, living = stored persons) | new table only | `down` refuses (55000) once any population is stored |
+| 0006 `world_runner` | `world_runners` (forward-only), `runner_controls` (decide-once) | new tables only | `down` drops them (operational state); refuses (55000) after an applied schedule extension |
 
 **Verification queries after `up`:**
-- `SELECT version FROM public.schema_migrations ORDER BY version` lists 1–5;
+- `SELECT version FROM public.schema_migrations ORDER BY version` lists 1–6;
 - `SELECT count(*) FROM pg_trigger WHERE tgname LIKE '%append_only' OR tgname LIKE '%no_truncate'` counts the guard triggers.
 
-**Tests** apply every released version (1–5) and then migrate to the latest. A v2 database seeded through the repositories upgrades with byte-identical state, events, commands and checkpoints.
+**Tests** apply every released version (1–6) and then migrate to the latest. A v2 database seeded through the repositories upgrades with byte-identical state, events, commands and checkpoints.
 
 **Development reset.** `pnpm db:reset` drops the `civ` schema and the migration history, then migrates up. It is refused unless all of these hold:
 - `NODE_ENV` is not `production`;
@@ -150,7 +153,8 @@ The reconciler rebuilds it from position 0. Authoritative tables are never edite
 |---|---|---|
 | Outbox backlog | `outboxBacklog()`: pending count, oldest age, max attempts (logged by the reconciler) | Growing age or attempts: Redis unreachable or the relay stopped. Facts are safe; projections fall back to the reconciler. |
 | Projection lag | `consumerLag(consumer)`: per-world `head − position` | Non-zero after a reconcile cycle: the consumer is failing; see `ledger job failed` logs. |
-| Stale writes | `StaleWriteError` after retries | Two writers on one world: the world lease (Phase 06) must prevent this. |
+| Stale writes | `StaleWriteError` after retries | Two writers on one world: the world lease (Phase 06) prevents this for runner commands. |
+| Fencing | `FencingError` | The writer lost its world lease; it stands by (`docs/RUNNER.md`). |
 | Integrity | `LedgerIntegrityError` | Defect or corruption: pause the world (SEV-1); never edit ledger rows. |
 
 Outbox retention: `pruneOutbox(olderThanMs)` deletes published rows. It is not scheduled yet (Phase 23 sets the TTL).

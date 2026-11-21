@@ -64,3 +64,96 @@ export function dueAtMs(schedule: SeasonSchedule, tick: number): number {
   const ceil = (numerator + total - 1n) / total;
   return schedule.startsAtMs + Number(ceil);
 }
+
+/**
+ * A schedule segment: from real time `anchorAtMs`, ticks `anchorTick …
+ * totalTicks` are spread evenly until `endsAtMs`. A season starts with the
+ * segment (0, startsAt, endsAt). An audited schedule extension re-anchors at
+ * the world's current clock and the current time with a later end, so
+ * simulated time never jumps and the season still ends exactly at
+ * `endsAtMs`. Each segment is computed from its own anchor with exact
+ * integer arithmetic: no drift, however many segments a season has.
+ */
+export interface ScheduleSegment {
+  readonly anchorTick: number;
+  readonly anchorAtMs: number;
+  readonly endsAtMs: number;
+  readonly totalTicks: number;
+}
+
+export function seasonSegment(schedule: SeasonSchedule): ScheduleSegment {
+  assertSchedule(schedule);
+  return {
+    anchorTick: 0,
+    anchorAtMs: schedule.startsAtMs,
+    endsAtMs: schedule.endsAtMs,
+    totalTicks: schedule.totalTicks,
+  };
+}
+
+export function assertSegment(segment: ScheduleSegment): void {
+  const { anchorTick, anchorAtMs, endsAtMs, totalTicks } = segment;
+  if (!Number.isSafeInteger(anchorTick) || anchorTick < 0 || anchorTick > totalTicks) {
+    throw new ScheduleError(`anchor tick ${anchorTick} is outside 0–${totalTicks}`);
+  }
+  assertSchedule({ startsAtMs: anchorAtMs, endsAtMs, totalTicks });
+}
+
+/** Ticks due at `nowMs` under a segment, in `[anchorTick, totalTicks]`. */
+export function segmentTicksDueAt(segment: ScheduleSegment, nowMs: number): number {
+  assertSegment(segment);
+  if (!Number.isSafeInteger(nowMs)) throw new ScheduleError("nowMs must be integer milliseconds");
+  if (nowMs <= segment.anchorAtMs) return segment.anchorTick;
+  if (nowMs >= segment.endsAtMs) return segment.totalTicks;
+  const elapsed = BigInt(nowMs) - BigInt(segment.anchorAtMs);
+  const duration = BigInt(segment.endsAtMs) - BigInt(segment.anchorAtMs);
+  const remaining = BigInt(segment.totalTicks - segment.anchorTick);
+  return segment.anchorTick + Number((elapsed * remaining) / duration);
+}
+
+/** Earliest real time at which `tick` ticks are due under a segment (`tick` in `[anchorTick, totalTicks]`). */
+export function segmentDueAtMs(segment: ScheduleSegment, tick: number): number {
+  assertSegment(segment);
+  if (!Number.isSafeInteger(tick) || tick < segment.anchorTick || tick > segment.totalTicks) {
+    throw new ScheduleError(`tick ${tick} is outside ${segment.anchorTick}–${segment.totalTicks}`);
+  }
+  if (tick === segment.anchorTick) return segment.anchorAtMs;
+  const duration = BigInt(segment.endsAtMs) - BigInt(segment.anchorAtMs);
+  const remaining = BigInt(segment.totalTicks - segment.anchorTick);
+  const numerator = BigInt(tick - segment.anchorTick) * duration;
+  return segment.anchorAtMs + Number((numerator + remaining - 1n) / remaining);
+}
+
+/**
+ * How far real time is ahead of the world: the time since the world's next
+ * tick (`clock + 1`) fell due, or 0 when the world is not behind. This is the
+ * extension that restores the segment's pace for the remaining ticks.
+ */
+export function lagMs(segment: ScheduleSegment, clock: number, nowMs: number): number {
+  if (clock >= segment.totalTicks) return 0;
+  const next = Math.max(clock + 1, segment.anchorTick);
+  return Math.max(0, nowMs - segmentDueAtMs(segment, Math.min(next, segment.totalTicks)));
+}
+
+/**
+ * Re-anchor a segment at the world's clock and the current time, ending
+ * `extraMs` later than before. Right after the extension the due count
+ * equals the clock (no jump forward or backward).
+ */
+export function extendSegment(
+  segment: ScheduleSegment,
+  extension: { readonly clock: number; readonly atMs: number; readonly extraMs: number },
+): ScheduleSegment {
+  assertSegment(segment);
+  const { clock, atMs, extraMs } = extension;
+  if (!Number.isSafeInteger(extraMs) || extraMs < 0) throw new ScheduleError("extraMs must be a non-negative integer");
+  if (!Number.isSafeInteger(clock) || clock < segment.anchorTick || clock >= segment.totalTicks) {
+    throw new ScheduleError(`cannot re-anchor at tick ${clock}`);
+  }
+  if (!Number.isSafeInteger(atMs) || atMs < segment.anchorAtMs) throw new ScheduleError("cannot re-anchor in the past");
+  const endsAtMs = segment.endsAtMs + extraMs;
+  if (endsAtMs <= atMs) throw new ScheduleError("the extended schedule must end after the re-anchoring time");
+  const next = { anchorTick: clock, anchorAtMs: atMs, endsAtMs, totalTicks: segment.totalTicks };
+  assertSegment(next);
+  return next;
+}

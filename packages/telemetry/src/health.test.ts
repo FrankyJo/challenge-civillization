@@ -107,4 +107,21 @@ describe("createHealthServer", () => {
     const base = await start(async () => {});
     expect((await fetch(`${base}/health/ready`)).status).toBe(200);
   });
+  it("serves Prometheus metrics only when a provider is configured", async () => {
+    expect((await fetch(`${await start(async () => {})}/metrics`)).status).toBe(404);
+    await close?.();
+    const server = createHealthServer({
+      service: "simulation",
+      version: "1.0.0",
+      probes: {},
+      logger: createLogger({ service: "simulation", level: "silent" }),
+      metrics: () => "# TYPE civ_test gauge\ncivTest 1\n",
+    });
+    await new Promise<void>((resolve) => server.listen(0, "127.0.0.1", resolve));
+    close = () => new Promise((resolve) => server.close(() => resolve()));
+    const response = await fetch(`http://127.0.0.1:${(server.address() as AddressInfo).port}/metrics`);
+    expect(response.status).toBe(200);
+    expect(response.headers.get("content-type")).toContain("text/plain; version=0.0.4");
+    expect(await response.text()).toContain("civTest 1");
+  });
 });

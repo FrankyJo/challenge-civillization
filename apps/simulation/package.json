@@ -9,7 +9,8 @@
     "typecheck": "tsc -p tsconfig.json",
     "test": "vitest run --dir src",
     "start": "node --env-file-if-exists=../../.env dist/main.js",
-    "test:integration": "vitest run --dir test/integration --hookTimeout=60000 --testTimeout=60000"
+    "test:integration": "vitest run --dir test/integration --hookTimeout=60000 --testTimeout=60000",
+    "runner:control": "node --env-file-if-exists=../../.env dist/control-cli.js"
   },
   "dependencies": {
     "@civ/content": "workspace:*",
