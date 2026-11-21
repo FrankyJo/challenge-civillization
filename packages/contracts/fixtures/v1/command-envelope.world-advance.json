@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "commandId": "cmd_00000003",
+  "type": "world.advance",
+  "typeVersion": 1,
+  "worldId": "wld_season001",
+  "instant": { "tick": 1024, "year": 3, "dayOfYear": 295 },
+  "issuedAt": "2027-01-02T03:04:05.678Z",
+  "actor": { "kind": "system", "component": "scheduler" },
+  "idempotencyKey": "advance-wld_season001-1024-1060",
+  "expectedVersion": null,
+  "causationId": null,
+  "correlationId": "4f1c2a9e-0d4b-4c55-9a43-2b6f8f2a1c10",
+  "versions": { "engineVersion": "0.1.0", "contentVersion": "sha256:44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a", "configVersion": "sha256:b5bb9d8014a0f9b1d61e21e796d78dccdf1352f23cd32812f4850b878ae4944c" },
+  "payload": { "fromTick": 1024, "toTick": 1060 }
+}

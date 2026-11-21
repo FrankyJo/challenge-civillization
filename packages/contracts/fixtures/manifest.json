@@ -16,6 +16,11 @@
       "sha256": "de8bbcbe067431940de0018be6a3d00aad20230b6765ca58b96d5764e5b048f5"
     },
     {
+      "file": "v1/command-envelope.world-advance.json",
+      "contract": "command-envelope",
+      "sha256": "0183fc376f00724cef4b1299bf89c1a771b39c3e2e7dd1ace47db676b57dc368"
+    },
+    {
       "file": "v1/command-envelope.world-pause.json",
       "contract": "command-envelope",
       "sha256": "c4be1ca17681e9df27a7e21bb1bafc215022a30f6e549cab93b5021fdc290d97"
@@ -34,6 +39,11 @@
       "file": "v1/event-cursor.json",
       "contract": "event-cursor",
       "sha256": "48970aa20a8983b7d42146d1e2e878a6ca561b2fe2ddae0a6f9ddfa53e6695a5"
+    },
+    {
+      "file": "v1/event-envelope.world-advanced.json",
+      "contract": "event-envelope",
+      "sha256": "0a52f3965b3bf3dab3d6a15069a3c3063b6c95340026e52cc89e18d349932052"
     },
     {
       "file": "v1/event-envelope.world-paused.json",

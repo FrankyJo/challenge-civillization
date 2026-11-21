@@ -17,6 +17,52 @@ const DOMAIN_RESTRICTED_GLOBALS = [
   { name: "setInterval", message: "Domain code must not schedule work." },
   { name: "fetch", message: "Domain code must not perform network I/O." },
   { name: "crypto", message: "Use named deterministic PRNG streams, not crypto randomness." },
+  { name: "Intl", message: "Locale-dependent formatting/collation is not deterministic across platforms." },
+  ...["globalThis", "global", "window", "self"].map((name) => ({
+    name,
+    message: "Domain code must not reach host globals (it would bypass the determinism guard).",
+  })),
+  ...["setImmediate", "queueMicrotask", "requestAnimationFrame"].map((name) => ({
+    name,
+    message: "Domain code must not schedule work.",
+  })),
+  ...["WeakRef", "FinalizationRegistry"].map((name) => ({
+    name,
+    message: "Garbage-collector timing is not deterministic.",
+  })),
+  ...["WebSocket", "XMLHttpRequest", "EventSource", "navigator", "location", "Temporal", "require", "Atomics"].map(
+    (name) => ({ name, message: "Domain code is pure: no I/O, host, time or module-loading APIs." }),
+  ),
+];
+
+/**
+ * Math functions whose results ECMAScript leaves implementation-approximated
+ * (they may differ between engines/platforms), plus Math.random.
+ */
+const NON_DETERMINISTIC_MATH = [
+  "random",
+  "exp",
+  "expm1",
+  "log",
+  "log1p",
+  "log2",
+  "log10",
+  "pow",
+  "cbrt",
+  "hypot",
+  "sin",
+  "cos",
+  "tan",
+  "asin",
+  "acos",
+  "atan",
+  "atan2",
+  "sinh",
+  "cosh",
+  "tanh",
+  "asinh",
+  "acosh",
+  "atanh",
 ];
 
 export default tseslint.config(
@@ -61,14 +107,75 @@ export default tseslint.config(
       "no-restricted-globals": ["error", ...DOMAIN_RESTRICTED_GLOBALS],
       "no-restricted-properties": [
         "error",
-        { object: "Math", property: "random", message: "Use a named deterministic PRNG stream (CLAUDE.md)." },
+        ...NON_DETERMINISTIC_MATH.map((property) => ({
+          object: "Math",
+          property,
+          message:
+            property === "random"
+              ? "Use a named deterministic PRNG stream (CLAUDE.md)."
+              : `Math.${property} is not bit-identical across engines; use integer/fixed-point helpers.`,
+        })),
+        { property: "localeCompare", message: "Locale collation is platform-dependent; compare code units." },
+        { property: "toLocaleString", message: "Locale formatting is platform-dependent." },
+        { property: "toLocaleUpperCase", message: "Locale case mapping is platform-dependent." },
+        { property: "toLocaleLowerCase", message: "Locale case mapping is platform-dependent." },
+        { property: "toLocaleDateString", message: "Domain code must not format wall-clock dates." },
+        { property: "toLocaleTimeString", message: "Domain code must not format wall-clock dates." },
+      ],
+      "no-restricted-syntax": [
+        "error",
+        {
+          selector: "ImportExpression",
+          message: "Dynamic import() cannot be checked by the determinism guard; use static imports.",
+        },
+        {
+          selector: "MemberExpression[object.name='Math'][computed=true]",
+          message: "Computed Math access bypasses the determinism guard; call allowed Math functions directly.",
+        },
+        {
+          selector: "VariableDeclarator[init.name='Math'], AssignmentExpression[right.name='Math']",
+          message: "Aliasing or destructuring Math bypasses the determinism guard.",
+        },
+        {
+          selector: "BinaryExpression[operator='**'], AssignmentExpression[operator='**=']",
+          message: "`**` is implementation-approximated for Numbers; multiply explicitly or use BigInt helpers.",
+        },
       ],
       "no-restricted-imports": [
         "error",
         {
           patterns: [
             {
-              group: ["node:*", "fs", "path", "os", "http", "https", "net", "crypto", "child_process"],
+              group: [
+                "node:*",
+                "fs",
+                "fs/*",
+                "path",
+                "os",
+                "http",
+                "https",
+                "http2",
+                "net",
+                "dgram",
+                "dns",
+                "tls",
+                "crypto",
+                "child_process",
+                "cluster",
+                "worker_threads",
+                "perf_hooks",
+                "timers",
+                "timers/*",
+                "util",
+                "zlib",
+                "stream",
+                "buffer",
+                "url",
+                "vm",
+                "v8",
+                "process",
+                "async_hooks",
+              ],
               message: "Domain code is pure: no Node I/O modules.",
             },
             {

@@ -1,12 +1,19 @@
 /**
- * @civ/domain — pure simulation domain.
+ * @civ/domain — pure deterministic simulation kernel.
  *
  * Boundaries are enforced twice: the ESLint determinism guard (no
- * Math.random, Date, performance, process, timers or I/O here) and the
- * dependency policy in scripts/architecture-policy.mjs (production code may
- * import only @civ/contracts and zod). Command/event envelopes live in
- * @civ/contracts; aggregates and transitions arrive from Phase 02 onward.
+ * Math.random, Date, timers, process, Intl/locale APIs, transcendental Math
+ * or `**`) and the dependency policy in scripts/architecture-policy.mjs
+ * (production code may import only @civ/contracts and zod).
  */
-
-/** Engine version stamped on health reports and, later, on every transition. */
-export const ENGINE_VERSION = "0.1.0";
+export * from "./calendar.js";
+export * from "./data-guard.js";
+export * from "./hash.js";
+export * from "./ids.js";
+export * from "./kernel.js";
+export * from "./random.js";
+export * from "./schedule.js";
+export * from "./sha256.js";
+export * from "./systems.js";
+export * from "./units.js";
+export * from "./version.js";

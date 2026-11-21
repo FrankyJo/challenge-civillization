@@ -16,6 +16,13 @@
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "typecheck": "tsc -p tsconfig.json",
-    "test": "vitest run --dir src"
+    "test": "vitest run --dir src",
+    "bench": "node bench/kernel.bench.mjs"
+  },
+  "dependencies": {
+    "@civ/contracts": "workspace:*"
+  },
+  "devDependencies": {
+    "@civ/testing": "workspace:*"
   }
 }
