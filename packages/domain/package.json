@@ -17,7 +17,8 @@
     "build": "tsc -p tsconfig.build.json",
     "typecheck": "tsc -p tsconfig.json",
     "test": "vitest run --dir src",
-    "bench": "node bench/kernel.bench.mjs"
+    "bench": "node bench/kernel.bench.mjs",
+    "bench:map": "node --expose-gc bench/map.bench.mjs"
   },
   "dependencies": {
     "@civ/contracts": "workspace:*"

@@ -27,6 +27,7 @@ import {
   UNIQUE_VIOLATION,
   UnknownWorldError,
 } from "./errors.js";
+import { insertWorldMap, verifyWorldMap, type StoredWorldMap } from "./maps.js";
 import { toIso, toSafeInt, withTransaction, type Queryable } from "./transaction.js";
 
 export const WORLD_STATE_SCHEMA_VERSION = 1 as const;
@@ -110,6 +111,8 @@ export interface CreateWorldInput {
   readonly stateHash: Digest;
   /** Optional checkpoint of the initial state. */
   readonly checkpoint?: Checkpoint;
+  /** The world's generated map and public snapshot (Phase 04); stored in the same transaction. */
+  readonly map?: StoredWorldMap;
   readonly correlationId: string;
 }
 
@@ -131,6 +134,10 @@ export async function createWorld(pool: pg.Pool, input: CreateWorldInput): Promi
   if (checkpoint !== undefined && checkpoint.stateHash !== input.stateHash) {
     throw new LedgerIntegrityError("initial checkpoint hash does not match the initial state");
   }
+  const map = input.map === undefined ? undefined : verifyWorldMap(input.map, "world map");
+  if (map !== undefined && (map.document.worldId !== world.worldId || map.document.seed !== world.seed)) {
+    throw new LedgerIntegrityError("the map must be generated for this world and its seed");
+  }
 
   try {
     await withTransaction(pool, async (client) => {
@@ -151,6 +158,7 @@ export async function createWorld(pool: pg.Pool, input: CreateWorldInput): Promi
         ],
       );
       await client.query("SELECT civ.ensure_event_partition($1)", [world.worldId]);
+      if (map !== undefined) await insertWorldMap(client, map);
       await client.query(
         `INSERT INTO civ.world_state
            (world_id, schema_version, clock, status, version, event_position, command_position, data, state_hash, versions)
@@ -172,7 +180,11 @@ export async function createWorld(pool: pg.Pool, input: CreateWorldInput): Promi
         subjectId: world.worldId,
         correlationId: input.correlationId,
         reason: null,
-        details: { stateHash: input.stateHash, versions: world.versions },
+        details: {
+          stateHash: input.stateHash,
+          versions: world.versions,
+          ...(map === undefined ? {} : { mapHash: map.document.mapHash, mapVersion: map.document.mapVersion }),
+        },
       });
     });
   } catch (error) {

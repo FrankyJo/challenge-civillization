@@ -1,5 +1,6 @@
 import {
   checkpointSchema,
+  digestSchema,
   eventRegistry,
   parseContract,
   worldIdSchema,
@@ -79,6 +80,21 @@ export interface EngineOptions<S> {
    * catch-up into several commands.
    */
   readonly maxTicksPerAdvance?: number;
+  /**
+   * The world's map (Phase 04). Systems receive the map itself through their
+   * own construction; the engine records its identity in the config
+   * document, so a different map or generator always yields a different
+   * `configVersion` and replay under the wrong map is rejected.
+   */
+  readonly geography?: GeographyReference;
+}
+
+/** Identity of the map a world runs on. */
+export interface GeographyReference {
+  /** Generator identity and params digest (`mapVersionOf`). */
+  readonly mapVersion: Digest;
+  /** Canonical hash of the map document. */
+  readonly mapHash: Digest;
 }
 
 export const DEFAULT_MAX_TICKS_PER_ADVANCE = 3_650;
@@ -91,6 +107,8 @@ export interface EngineConfigDocument {
   readonly calendar: { readonly id: string; readonly startYear: number; readonly endYear: number };
   readonly systems: SystemSchedule<unknown>["descriptor"];
   readonly maxTicksPerAdvance: number;
+  /** Present only for worlds with a map, so map-less configurations keep their digest. */
+  readonly geography?: GeographyReference;
 }
 
 export interface Engine<S> {
@@ -132,10 +150,17 @@ export function createEngine<S>(options: EngineOptions<S>): Engine<S> {
   if (!Number.isSafeInteger(maxTicksPerAdvance) || maxTicksPerAdvance < 1) {
     throw new RangeError("maxTicksPerAdvance must be a positive integer");
   }
+  if (options.geography !== undefined) {
+    parseContract("map version", digestSchema, options.geography.mapVersion);
+    parseContract("map hash", digestSchema, options.geography.mapHash);
+  }
   const config: EngineConfigDocument = Object.freeze({
     calendar: { id: CALENDAR_ID, startYear: span.startYear, endYear: span.endYear },
     systems: options.schedule.descriptor,
     maxTicksPerAdvance,
+    ...(options.geography === undefined
+      ? {}
+      : { geography: { mapVersion: options.geography.mapVersion, mapHash: options.geography.mapHash } }),
   });
   const versions: VersionStamp = Object.freeze({
     engineVersion: ENGINE_VERSION,

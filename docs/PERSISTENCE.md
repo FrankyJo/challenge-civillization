@@ -2,7 +2,7 @@
 
 Executable source:
 
-- `packages/db/migrations/0002_authoritative_store.*.sql`, `0003_world_status_projection.*.sql`;
+- `packages/db/migrations/0002_authoritative_store.*.sql`, `0003_world_status_projection.*.sql`, `0004_world_maps.*.sql`;
 - `packages/db/src` (repositories, transactions, outbox, consumers);
 - `apps/simulation/src/command-processor.ts` (load → apply → commit);
 - `apps/worker/src/ledger.ts`, `world-status.ts` (relay, consumer, reconciler, first projection).
@@ -26,6 +26,7 @@ PostgreSQL is the only holder of authoritative facts. Redis/BullMQ carries notif
 | `inbox` | processed markers for jobs with side effects | insert-only |
 | `consumer_offsets` | durable per-consumer, per-world ledger cursors | advanced with the consumer's own writes |
 | `proj_world_status` | first projection (non-authoritative, rebuildable) | upserted by its consumer |
+| `world_maps` | the world's generated map document and public snapshot (`docs/GEOGRAPHY.md`) | append-only; written in the world's creation transaction |
 
 **Append-only enforcement.** A shared trigger function `civ.reject_mutation()` raises SQLSTATE `23001` on `UPDATE`, `DELETE` and `TRUNCATE` of every append-only table and of every ledger partition. Row triggers are cloned onto new partitions automatically; `civ.ensure_event_partition` adds the statement-level `TRUNCATE` trigger to each new partition. The repositories expose no operation that updates or deletes facts (asserted by a test). DDL (`DROP TABLE`, `DETACH PARTITION`, `ALTER TABLE … DISABLE TRIGGER`) and `session_replication_role = replica` bypass triggers. In shared environments the application role must therefore not own the schema or be a superuser, and must hold only `SELECT, INSERT` on append-only tables (Phase 24 provisions roles; recorded as a remaining risk).
 
@@ -128,12 +129,13 @@ The reconciler rebuilds it from position 0. Authoritative tables are never edite
 |---|---|---|---|
 | 0002 `authoritative_store` | functions, tables, triggers, indexes above | new objects only; no lock on existing data | `down` refuses (SQLSTATE 55000) when any world exists; roll forward instead |
 | 0003 `world_status_projection` | `proj_world_status` | new table only | `down` drops the projection and its cursors (rebuildable) |
+| 0004 `world_maps` | `world_maps` with append-only triggers and CHECKs tying both documents to `map_hash` | new table only | `down` refuses (55000) once any map is stored; roll forward instead |
 
 **Verification queries after `up`:**
-- `SELECT version FROM public.schema_migrations ORDER BY version` lists 1–3;
+- `SELECT version FROM public.schema_migrations ORDER BY version` lists 1–4;
 - `SELECT count(*) FROM pg_trigger WHERE tgname LIKE '%append_only' OR tgname LIKE '%no_truncate'` counts the guard triggers.
 
-**Tests** apply every released version (1, 2) and then migrate to the latest. A v2 database seeded through the repositories upgrades with byte-identical state, events, commands and checkpoints.
+**Tests** apply every released version (1–4) and then migrate to the latest. A v2 database seeded through the repositories upgrades with byte-identical state, events, commands and checkpoints.
 
 **Development reset.** `pnpm db:reset` drops the `civ` schema and the migration history, then migrates up. It is refused unless all of these hold:
 - `NODE_ENV` is not `production`;

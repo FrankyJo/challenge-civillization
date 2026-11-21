@@ -2,6 +2,7 @@ import { type z } from "zod";
 import { apiErrorSchema } from "./api-error.js";
 import { checkpointSchema, eventCursorSchema, eventCursorStringSchema } from "./cursor.js";
 import { ledgerNotificationSchema } from "./delivery.js";
+import { mapParamsSchema, publicMapSnapshotSchema, worldMapSchema } from "./geography.js";
 import { healthReportSchema } from "./health.js";
 import { commandRegistry, eventRegistry } from "./messages.js";
 import { proposalReviewSchema, proposalSchema, sourceRecordSchema } from "./proposal.js";
@@ -111,6 +112,30 @@ export const CONTRACT_CATALOG: readonly ContractEntry[] = Object.freeze([
     description:
       "Outbox/queue notice that a world's ledger grew; consumers read facts from the ledger, not the notice.",
     schema: ledgerNotificationSchema,
+  },
+  {
+    name: "map-params",
+    version: 1,
+    audience: "internal",
+    description:
+      "World map generator parameters: grid size and spacing, latitude, temperature, land share, relief, regions.",
+    schema: mapParamsSchema,
+  },
+  {
+    name: "world-map",
+    version: 1,
+    audience: "internal",
+    description:
+      "Authoritative generated map: per-cell terrain, climate, drainage, resources and hazards with units; regions, water bodies, deposits; content hash.",
+    schema: worldMapSchema,
+  },
+  {
+    name: "public-map-snapshot",
+    version: 1,
+    audience: "public",
+    description:
+      "Compact renderer-agnostic map projection: terrain, biome, elevation band, coast/river and regions only.",
+    schema: publicMapSnapshotSchema,
   },
   {
     name: "api-error",

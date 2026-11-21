@@ -26,11 +26,14 @@ The format is `<prefix>_<8–64 chars [0-9a-z]>`. The prefixes are fixed and mus
 | proposal | `prp` |
 | source | `src` |
 | review | `rvw` |
+| region | `rgn` |
+| waterBody | `wbd` |
 
 - Each kind has a branded TypeScript type, so passing an ID of the wrong kind is a compile error. At runtime, the wrong kind is a validation error.
 - Correlation IDs are log-safe tokens matching `[A-Za-z0-9._:-]{1,128}`, because they may originate outside the system. Telemetry accepts inbound values using this same pattern.
 - Idempotency keys match `[A-Za-z0-9._:-]{8,128}`.
 - The engine will generate IDs deterministically from named streams (Phase 02).
+- Map cells use the reversible spatial ID `cel_<col><row>` (four base-36 digits each) instead of a derived ID (`docs/GEOGRAPHY.md`).
 
 ## Versions and time
 
@@ -102,6 +105,21 @@ Registered variants: the world-control pair specified in `docs/SECURITY-OPERATIO
 
 `ledger-notification` (internal) is the outbox/queue payload `{ schemaVersion, worldId, fromPosition, toPosition }` announcing that ledger events `[fromPosition, toPosition)` were committed. It carries no facts: consumers read events from the ledger by their own durable cursor (`docs/PERSISTENCE.md`).
 
+## Geography
+
+- `map-params` (internal) holds the generator parameters.
+- `world-map` (internal) is the authoritative map document:
+  - dense integer per-cell layers;
+  - a legend and a pinned unit for every layer;
+  - deposits in tonnes;
+  - landmasses, regions and water bodies;
+  - `mapVersion` and `mapHash`.
+- The schema checks structure only: layer lengths, legends, units and ID formats. The domain validator (`validateWorldMap`) checks semantics.
+- `public-map-snapshot` (public) is the compact projection the web client renders:
+  - one character per cell for terrain, biome, elevation band and features;
+  - run-length region membership.
+- The snapshot carries no seed, resources, hazards, climate values or drainage. Its specification is in `docs/GEOGRAPHY.md`.
+
 ## Evolution and compatibility
 
 ### Strictness and rolling compatibility
@@ -132,6 +150,7 @@ Strict reads mean that any change to a persisted or exchanged document must be v
 - Current public contracts:
   - `public-world`
   - `public-season`
+  - `public-map-snapshot` (a derived projection, not a field allowlist; built by the domain's `mapSnapshot`)
   - `simulation-instant`
   - `version-stamp`
   - `event-cursor` (decoded and wire forms)

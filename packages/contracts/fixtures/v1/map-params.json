@@ -1,0 +1,14 @@
+{
+  "width": 10,
+  "height": 8,
+  "cellSpacingM": 5000,
+  "topLatitudeMicroDeg": 43000000,
+  "seaLevelTemperatureTopDeciC": 115,
+  "seaLevelTemperatureBottomDeciC": 150,
+  "landFractionPpm": 500000,
+  "maxElevationM": 3200,
+  "maxDepthM": 2500,
+  "regionTargetCells": 8,
+  "minLandmassCells": 2,
+  "riverMinDischargeM3PerYear": 150000000
+}

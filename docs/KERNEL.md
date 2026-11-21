@@ -105,6 +105,7 @@ Every amount is a safe integer in its unit's smallest step.
 - Systems run in ascending `order` within each tick, never in registration order.
 - Each run gets the stream `["system", id, tick]`.
 - The schedule descriptor and calendar are hashed into `configVersion`.
+- A world with a map passes `createEngine({ geography: { mapVersion, mapHash } })`. That identity joins the config document, so a different map or generator version gives a different `configVersion`. Engines without a map keep their previous digest. Systems receive the `WorldMap` itself when they are constructed, never through world state (`docs/GEOGRAPHY.md`).
 
 **World data guard:**
 - World data must be plain JSON: finite numbers, strings, booleans, null, plain objects and dense arrays.

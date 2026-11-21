@@ -1,4 +1,5 @@
-import { mkdtemp, readdir, copyFile } from "node:fs/promises";
+import { mkdtemp, readdir, readFile, copyFile } from "node:fs/promises";
+import { publicMapSnapshotSchema, worldMapSchema } from "@civ/contracts";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { createEphemeralDatabase, LedgerScript, requireTestEnv, type EphemeralDatabase } from "@civ/testing";
@@ -11,6 +12,7 @@ import {
   DEFAULT_MIGRATIONS_DIR,
   latestCheckpoint,
   loadMigrations,
+  loadWorldMap,
   loadWorldState,
   migrateDown,
   migrateUp,
@@ -101,8 +103,10 @@ describe("migration upgrade paths", () => {
     const before = await snapshot(pool, script.world.worldId);
     expect(before.events.events).toHaveLength(4);
 
-    expect(await migrateUp(pool)).toEqual([3]);
+    expect(await migrateUp(pool)).toEqual([3, 4]);
     expect(await snapshot(pool, script.world.worldId)).toEqual(before);
+    const maps = await pool.query("SELECT count(*)::int AS n FROM civ.world_maps");
+    expect(maps.rows[0]).toEqual({ n: 0 });
     const projection = await pool.query("SELECT count(*)::int AS n FROM civ.proj_world_status");
     expect(projection.rows[0]).toEqual({ n: 0 });
   });
@@ -113,18 +117,38 @@ describe("migration upgrade paths", () => {
     const script = await seedFixture(pool);
     const before = await snapshot(pool, script.world.worldId);
 
-    expect(await migrateDown(pool)).toEqual([3]);
+    expect(await migrateDown(pool, { steps: 2 })).toEqual([4, 3]);
     await expect(migrateDown(pool)).rejects.toThrow(/refusing to roll back 0002/);
-    expect((await migrationStatus(pool)).map((row) => row.appliedAt !== null)).toEqual([true, true, false]);
+    expect((await migrationStatus(pool)).map((row) => row.appliedAt !== null)).toEqual([true, true, false, false]);
     expect(await snapshot(pool, script.world.worldId)).toEqual(before);
-    expect(await migrateUp(pool)).toEqual([3]);
+    expect(await migrateUp(pool)).toEqual([3, 4]);
+  });
+
+  it("refuses to roll back 0004 once a world map is stored", async () => {
+    const pool = await freshDatabase();
+    await migrateUp(pool);
+    const fixtures = join(DEFAULT_MIGRATIONS_DIR, "..", "..", "contracts", "fixtures", "v1");
+    const document = worldMapSchema.parse(JSON.parse(await readFile(join(fixtures, "world-map.json"), "utf8")));
+    const snapshotDto = publicMapSnapshotSchema.parse(
+      JSON.parse(await readFile(join(fixtures, "public-map-snapshot.json"), "utf8")),
+    );
+    const script = new LedgerScript({ worldId: document.worldId });
+    await createWorld(pool, {
+      world: { ...script.world, seed: document.seed },
+      initialState: script.state,
+      stateHash: script.stateHash,
+      map: { document, snapshot: snapshotDto },
+      correlationId: "fixture",
+    });
+    await expect(migrateDown(pool)).rejects.toThrow(/refusing to roll back 0004/);
+    expect((await loadWorldMap(pool, document.worldId)).document.mapHash).toBe(document.mapHash);
   });
 
   it("development reset drops everything and re-applies all migrations", async () => {
     const pool = await freshDatabase();
     await migrateUp(pool);
     await seedFixture(pool);
-    expect(await resetDatabase(pool)).toEqual([1, 2, 3]);
+    expect(await resetDatabase(pool)).toEqual([1, 2, 3, 4]);
     const worlds = await pool.query("SELECT count(*)::int AS n FROM civ.worlds");
     expect(worlds.rows[0]).toEqual({ n: 0 });
   });

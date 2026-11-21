@@ -1,0 +1,182 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "number",
+      "const": 1
+    },
+    "worldId": {
+      "type": "string",
+      "pattern": "^wld_[0-9a-z]{8,64}$"
+    },
+    "mapVersion": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "mapHash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "grid": {
+      "type": "object",
+      "properties": {
+        "layout": {
+          "type": "string",
+          "const": "hex-pointy-odd-r"
+        },
+        "width": {
+          "type": "integer",
+          "minimum": 8,
+          "maximum": 1024
+        },
+        "height": {
+          "type": "integer",
+          "minimum": 8,
+          "maximum": 1024
+        },
+        "cellSpacingM": {
+          "type": "integer",
+          "minimum": 500,
+          "maximum": 50000
+        },
+        "rowSpacingM": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 50000
+        }
+      },
+      "required": [
+        "layout",
+        "width",
+        "height",
+        "cellSpacingM",
+        "rowSpacingM"
+      ],
+      "additionalProperties": false
+    },
+    "legend": {
+      "type": "object",
+      "properties": {
+        "terrain": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "deep_ocean",
+              "shelf_sea",
+              "lake",
+              "plains",
+              "hills",
+              "mountains",
+              "high_mountains"
+            ]
+          }
+        },
+        "biome": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "ocean",
+              "lake",
+              "glacier",
+              "alpine_tundra",
+              "boreal_forest",
+              "temperate_forest",
+              "mediterranean_woodland",
+              "temperate_grassland",
+              "semi_desert",
+              "desert",
+              "wetland"
+            ]
+          }
+        },
+        "elevationBandsM": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          }
+        }
+      },
+      "required": [
+        "terrain",
+        "biome",
+        "elevationBandsM"
+      ],
+      "additionalProperties": false
+    },
+    "terrain": {
+      "type": "string",
+      "pattern": "^[0-9a-z]*$"
+    },
+    "biome": {
+      "type": "string",
+      "pattern": "^[0-9a-z]*$"
+    },
+    "elevationBand": {
+      "type": "string",
+      "pattern": "^[0-9]*$"
+    },
+    "features": {
+      "type": "string",
+      "pattern": "^[0-3]*$"
+    },
+    "regionRuns": {
+      "maxItems": 131072,
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "minimum": -1,
+        "maximum": 65536
+      }
+    },
+    "regions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "regionId": {
+            "type": "string",
+            "pattern": "^rgn_[0-9a-z]{8,64}$"
+          },
+          "seedCell": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "cellCount": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 65536
+          }
+        },
+        "required": [
+          "regionId",
+          "seedCell",
+          "cellCount"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "worldId",
+    "mapVersion",
+    "mapHash",
+    "grid",
+    "legend",
+    "terrain",
+    "biome",
+    "elevationBand",
+    "features",
+    "regionRuns",
+    "regions"
+  ],
+  "additionalProperties": false,
+  "title": "public-map-snapshot v1",
+  "description": "Compact renderer-agnostic map projection: terrain, biome, elevation band, coast/river and regions only."
+}

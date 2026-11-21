@@ -20,6 +20,9 @@ contracts must never be, except through an explicit public DTO allowlist.
 | `event-cursor-string` | 1 | public | [schema](schemas/event-cursor-string.v1.schema.json) | Wire form of an event cursor: v1.<worldId>.<position>. |
 | `checkpoint` | 1 | internal | [schema](schemas/checkpoint.v1.schema.json) | Canonical state checkpoint metadata: ledger position, instant, state hash, versions. |
 | `ledger-notification` | 1 | internal | [schema](schemas/ledger-notification.v1.schema.json) | Outbox/queue notice that a world's ledger grew; consumers read facts from the ledger, not the notice. |
+| `map-params` | 1 | internal | [schema](schemas/map-params.v1.schema.json) | World map generator parameters: grid size and spacing, latitude, temperature, land share, relief, regions. |
+| `world-map` | 1 | internal | [schema](schemas/world-map.v1.schema.json) | Authoritative generated map: per-cell terrain, climate, drainage, resources and hazards with units; regions, water bodies, deposits; content hash. |
+| `public-map-snapshot` | 1 | public | [schema](schemas/public-map-snapshot.v1.schema.json) | Compact renderer-agnostic map projection: terrain, biome, elevation band, coast/river and regions only. |
 | `api-error` | 1 | public | [schema](schemas/api-error.v1.schema.json) | The single HTTP error body: stable code, safe message, correlation ID, issue details. |
 | `health-report` | 1 | public | [schema](schemas/health-report.v1.schema.json) | Liveness/readiness report served by every Node process. |
 | `proposal` | 1 | internal | [schema](schemas/proposal.v1.schema.json) | Historical content proposal and its lifecycle state. |

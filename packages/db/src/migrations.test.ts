@@ -25,6 +25,7 @@ describe("loadMigrations", () => {
       "1:baseline",
       "2:authoritative_store",
       "3:world_status_projection",
+      "4:world_maps",
     ]);
     expect(migrations[0]?.checksum).toBe(checksum(migrations[0]?.up ?? "", migrations[0]?.down ?? ""));
   });

@@ -66,6 +66,11 @@
       "sha256": "4df22eefb94e0fef81cac801f19101a24c23d67652d6f8104d46da17e65c5d9e"
     },
     {
+      "file": "v1/map-params.json",
+      "contract": "map-params",
+      "sha256": "7bd8335a7f05094e1b3c71de3343d71d3d5ee9b1871fd56e765e2ef0a0bd49ea"
+    },
+    {
       "file": "v1/proposal-review.json",
       "contract": "proposal-review",
       "sha256": "d6729d1627a1d2b15847bb7b51375d9e06b2d94dd463758f1ef1824667021f7f"
@@ -79,6 +84,11 @@
       "file": "v1/proposal.json",
       "contract": "proposal",
       "sha256": "9b4b8d29ad3a321af430beaddba2e5c9fe963c49b2da06dae2cb8562707833fd"
+    },
+    {
+      "file": "v1/public-map-snapshot.json",
+      "contract": "public-map-snapshot",
+      "sha256": "72fb5633ab0d7b6a9987463fb4332c743bc1394b56ce90088284740263704f49"
     },
     {
       "file": "v1/public-season.json",
@@ -114,6 +124,11 @@
       "file": "v1/version-stamp.json",
       "contract": "version-stamp",
       "sha256": "e87a98a715f334624e32178a9ca01da6a96643fd1f58c2a2832f1985aafbbc96"
+    },
+    {
+      "file": "v1/world-map.json",
+      "contract": "world-map",
+      "sha256": "404aaff0af5af9d195109045a2b3769c63d40a73f1d0b7f3eb84af984d6f6fd4"
     },
     {
       "file": "v1/world-record.json",

@@ -1,0 +1,835 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "number",
+      "const": 1
+    },
+    "worldId": {
+      "type": "string",
+      "pattern": "^wld_[0-9a-z]{8,64}$"
+    },
+    "seed": {
+      "type": "string",
+      "pattern": "^(?:[0-9a-f]{2}){8,32}$"
+    },
+    "generator": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "const": "civ-hexgen"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?$"
+        }
+      },
+      "required": [
+        "id",
+        "version"
+      ],
+      "additionalProperties": false
+    },
+    "params": {
+      "type": "object",
+      "properties": {
+        "width": {
+          "type": "integer",
+          "minimum": 8,
+          "maximum": 1024
+        },
+        "height": {
+          "type": "integer",
+          "minimum": 8,
+          "maximum": 1024
+        },
+        "cellSpacingM": {
+          "type": "integer",
+          "minimum": 500,
+          "maximum": 50000
+        },
+        "topLatitudeMicroDeg": {
+          "type": "integer",
+          "minimum": -80000000,
+          "maximum": 80000000
+        },
+        "seaLevelTemperatureTopDeciC": {
+          "type": "integer",
+          "minimum": -300,
+          "maximum": 350
+        },
+        "seaLevelTemperatureBottomDeciC": {
+          "type": "integer",
+          "minimum": -300,
+          "maximum": 350
+        },
+        "landFractionPpm": {
+          "type": "integer",
+          "minimum": 100000,
+          "maximum": 900000
+        },
+        "maxElevationM": {
+          "type": "integer",
+          "minimum": 100,
+          "maximum": 9000
+        },
+        "maxDepthM": {
+          "type": "integer",
+          "minimum": 100,
+          "maximum": 11000
+        },
+        "regionTargetCells": {
+          "type": "integer",
+          "minimum": 4,
+          "maximum": 10000
+        },
+        "minLandmassCells": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10000
+        },
+        "riverMinDischargeM3PerYear": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        }
+      },
+      "required": [
+        "width",
+        "height",
+        "cellSpacingM",
+        "topLatitudeMicroDeg",
+        "seaLevelTemperatureTopDeciC",
+        "seaLevelTemperatureBottomDeciC",
+        "landFractionPpm",
+        "maxElevationM",
+        "maxDepthM",
+        "regionTargetCells",
+        "minLandmassCells",
+        "riverMinDischargeM3PerYear"
+      ],
+      "additionalProperties": false
+    },
+    "mapVersion": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "grid": {
+      "type": "object",
+      "properties": {
+        "layout": {
+          "type": "string",
+          "const": "hex-pointy-odd-r"
+        },
+        "width": {
+          "type": "integer",
+          "minimum": 8,
+          "maximum": 1024
+        },
+        "height": {
+          "type": "integer",
+          "minimum": 8,
+          "maximum": 1024
+        },
+        "cellSpacingM": {
+          "type": "integer",
+          "minimum": 500,
+          "maximum": 50000
+        },
+        "rowSpacingM": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 50000
+        },
+        "cellAreaM2": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        }
+      },
+      "required": [
+        "layout",
+        "width",
+        "height",
+        "cellSpacingM",
+        "rowSpacingM",
+        "cellAreaM2"
+      ],
+      "additionalProperties": false
+    },
+    "projection": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "const": "local-equirectangular"
+        },
+        "topLatitudeMicroDeg": {
+          "type": "integer",
+          "minimum": -90000000,
+          "maximum": 90000000
+        },
+        "metresPerDegreeLatitude": {
+          "type": "number",
+          "const": 111195
+        }
+      },
+      "required": [
+        "kind",
+        "topLatitudeMicroDeg",
+        "metresPerDegreeLatitude"
+      ],
+      "additionalProperties": false
+    },
+    "legend": {
+      "type": "object",
+      "properties": {
+        "terrain": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "deep_ocean",
+              "shelf_sea",
+              "lake",
+              "plains",
+              "hills",
+              "mountains",
+              "high_mountains"
+            ]
+          }
+        },
+        "biome": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "ocean",
+              "lake",
+              "glacier",
+              "alpine_tundra",
+              "boreal_forest",
+              "temperate_forest",
+              "mediterranean_woodland",
+              "temperate_grassland",
+              "semi_desert",
+              "desert",
+              "wetland"
+            ]
+          }
+        },
+        "climateClass": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "marine",
+              "polar_ice",
+              "alpine",
+              "arid",
+              "semi_arid",
+              "mediterranean",
+              "humid_temperate",
+              "cool_temperate"
+            ]
+          }
+        },
+        "climateBand": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "tropical",
+              "subtropical",
+              "temperate",
+              "subpolar",
+              "polar"
+            ]
+          }
+        },
+        "mineral": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "copper_ore",
+              "tin_ore",
+              "iron_ore",
+              "precious_metal_ore",
+              "salt",
+              "building_stone",
+              "clay"
+            ]
+          }
+        }
+      },
+      "required": [
+        "terrain",
+        "biome",
+        "climateClass",
+        "climateBand",
+        "mineral"
+      ],
+      "additionalProperties": false
+    },
+    "units": {
+      "type": "object",
+      "properties": {
+        "elevationM": {
+          "type": "string",
+          "const": "metre above sea level (lake cells: water surface)"
+        },
+        "terrain": {
+          "type": "string",
+          "const": "index into legend.terrain"
+        },
+        "biome": {
+          "type": "string",
+          "const": "index into legend.biome"
+        },
+        "climateClass": {
+          "type": "string",
+          "const": "index into legend.climateClass"
+        },
+        "temperatureDeciC": {
+          "type": "string",
+          "const": "0.1 °C, annual mean"
+        },
+        "precipitationMm": {
+          "type": "string",
+          "const": "millimetre per year"
+        },
+        "flags": {
+          "type": "string",
+          "const": "bitmask (CELL_FLAGS)"
+        },
+        "landmass": {
+          "type": "string",
+          "const": "index into landmasses, -1 for water"
+        },
+        "region": {
+          "type": "string",
+          "const": "index into regions, -1 for water"
+        },
+        "waterBody": {
+          "type": "string",
+          "const": "index into waterBodies, -1 for land"
+        },
+        "flowTo": {
+          "type": "string",
+          "const": "cell index of the downstream receiver, -1 for ocean"
+        },
+        "dischargeM3PerYear": {
+          "type": "string",
+          "const": "cubic metre per year flowing out of the cell"
+        },
+        "landAreaHa": {
+          "type": "string",
+          "const": "hectare"
+        },
+        "forestHa": {
+          "type": "string",
+          "const": "hectare"
+        },
+        "grasslandHa": {
+          "type": "string",
+          "const": "hectare"
+        },
+        "wetlandHa": {
+          "type": "string",
+          "const": "hectare"
+        },
+        "barrenHa": {
+          "type": "string",
+          "const": "hectare"
+        },
+        "arablePotentialHa": {
+          "type": "string",
+          "const": "hectare cultivable if cleared/drained"
+        },
+        "timberStockM3": {
+          "type": "string",
+          "const": "cubic metre standing wood"
+        },
+        "runoffM3PerYear": {
+          "type": "string",
+          "const": "cubic metre per year generated in the cell"
+        },
+        "fishKgPerYear": {
+          "type": "string",
+          "const": "kilogram per year sustainable catch"
+        },
+        "floodPpm": {
+          "type": "string",
+          "const": "parts per million: annual probability of a damaging flood"
+        },
+        "droughtPpm": {
+          "type": "string",
+          "const": "parts per million: annual probability of a severe drought"
+        },
+        "seismicPpm": {
+          "type": "string",
+          "const": "parts per million: annual probability of a damaging earthquake"
+        },
+        "wildfirePpm": {
+          "type": "string",
+          "const": "parts per million: annual probability of a damaging wildfire"
+        }
+      },
+      "required": [
+        "elevationM",
+        "terrain",
+        "biome",
+        "climateClass",
+        "temperatureDeciC",
+        "precipitationMm",
+        "flags",
+        "landmass",
+        "region",
+        "waterBody",
+        "flowTo",
+        "dischargeM3PerYear",
+        "landAreaHa",
+        "forestHa",
+        "grasslandHa",
+        "wetlandHa",
+        "barrenHa",
+        "arablePotentialHa",
+        "timberStockM3",
+        "runoffM3PerYear",
+        "fishKgPerYear",
+        "floodPpm",
+        "droughtPpm",
+        "seismicPpm",
+        "wildfirePpm"
+      ],
+      "additionalProperties": false
+    },
+    "depositUnit": {
+      "type": "string",
+      "const": "tonne of ore or raw material in place"
+    },
+    "rows": {
+      "type": "object",
+      "properties": {
+        "latitudeMicroDeg": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          }
+        },
+        "climateBand": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          }
+        }
+      },
+      "required": [
+        "latitudeMicroDeg",
+        "climateBand"
+      ],
+      "additionalProperties": false
+    },
+    "cells": {
+      "type": "object",
+      "properties": {
+        "elevationM": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          }
+        },
+        "terrain": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          }
+        },
+        "biome": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          }
+        },
+        "climateClass": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          }
+        },
+        "temperatureDeciC": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          }
+        },
+        "precipitationMm": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          }
+        },
+        "flags": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          }
+        },
+        "landmass": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          }
+        },
+        "region": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          }
+        },
+        "waterBody": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          }
+        },
+        "flowTo": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          }
+        },
+        "dischargeM3PerYear": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          }
+        },
+        "landAreaHa": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          }
+        },
+        "forestHa": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          }
+        },
+        "grasslandHa": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          }
+        },
+        "wetlandHa": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          }
+        },
+        "barrenHa": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          }
+        },
+        "arablePotentialHa": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          }
+        },
+        "timberStockM3": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          }
+        },
+        "runoffM3PerYear": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          }
+        },
+        "fishKgPerYear": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          }
+        },
+        "floodPpm": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          }
+        },
+        "droughtPpm": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          }
+        },
+        "seismicPpm": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          }
+        },
+        "wildfirePpm": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          }
+        }
+      },
+      "required": [
+        "elevationM",
+        "terrain",
+        "biome",
+        "climateClass",
+        "temperatureDeciC",
+        "precipitationMm",
+        "flags",
+        "landmass",
+        "region",
+        "waterBody",
+        "flowTo",
+        "dischargeM3PerYear",
+        "landAreaHa",
+        "forestHa",
+        "grasslandHa",
+        "wetlandHa",
+        "barrenHa",
+        "arablePotentialHa",
+        "timberStockM3",
+        "runoffM3PerYear",
+        "fishKgPerYear",
+        "floodPpm",
+        "droughtPpm",
+        "seismicPpm",
+        "wildfirePpm"
+      ],
+      "additionalProperties": false
+    },
+    "deposits": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "cell": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "mineral": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "amountT": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000000000
+          }
+        },
+        "required": [
+          "cell",
+          "mineral",
+          "amountT"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "landmasses": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "firstCell": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "cellCount": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 65536
+          }
+        },
+        "required": [
+          "firstCell",
+          "cellCount"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "regions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "regionId": {
+            "type": "string",
+            "pattern": "^rgn_[0-9a-z]{8,64}$"
+          },
+          "seedCell": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "landmass": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "cellCount": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 65536
+          },
+          "landAreaHa": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "regionId",
+          "seedCell",
+          "landmass",
+          "cellCount",
+          "landAreaHa"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "waterBodies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "waterBodyId": {
+            "type": "string",
+            "pattern": "^wbd_[0-9a-z]{8,64}$"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "ocean",
+              "lake"
+            ]
+          },
+          "firstCell": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "cellCount": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 65536
+          },
+          "surfaceElevationM": {
+            "type": "integer",
+            "minimum": -1,
+            "maximum": 9000
+          }
+        },
+        "required": [
+          "waterBodyId",
+          "kind",
+          "firstCell",
+          "cellCount",
+          "surfaceElevationM"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "mapHash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "worldId",
+    "seed",
+    "generator",
+    "params",
+    "mapVersion",
+    "grid",
+    "projection",
+    "legend",
+    "units",
+    "depositUnit",
+    "rows",
+    "cells",
+    "deposits",
+    "landmasses",
+    "regions",
+    "waterBodies",
+    "mapHash"
+  ],
+  "additionalProperties": false,
+  "title": "world-map v1",
+  "description": "Authoritative generated map: per-cell terrain, climate, drainage, resources and hazards with units; regions, water bodies, deposits; content hash."
+}
