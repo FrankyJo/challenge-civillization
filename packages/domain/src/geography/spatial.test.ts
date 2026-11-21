@@ -38,6 +38,9 @@ const map = generateWorldMap({ worldId: "wld_spatial01", seed: "9e3779b97f4a7c15
 const landCells = map.cells.flags.flatMap((flags, index) => ((flags & CELL_FLAGS.water) === 0 ? [index] : []));
 const landCell = fc.constantFrom(...landCells);
 
+// Full-size syntheses and audits take seconds on shared CI runners.
+const HEAVY = { timeout: 60_000 };
+
 describe("hex grid", () => {
   it("has symmetric adjacency at distance 1", () => {
     fc.assert(
@@ -177,7 +180,7 @@ describe("integer primitives", () => {
   });
 });
 
-describe("routes", () => {
+describe("routes", HEAVY, () => {
   const foot = costFieldFor(map, FOOT_TRAVEL);
   const boat = costFieldFor(map, FOOT_AND_BOAT_TRAVEL);
 

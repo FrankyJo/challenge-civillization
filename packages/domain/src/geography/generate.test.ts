@@ -33,7 +33,10 @@ const rehash = (map: WorldMap): WorldMap => {
   return { ...rest, mapHash: canonicalHash(rest) };
 };
 
-describe("map generation", () => {
+// Full-size syntheses and audits take seconds on shared CI runners.
+const HEAVY = { timeout: 60_000 };
+
+describe("map generation", HEAVY, () => {
   it("reproduces the golden map for the default params", () => {
     expect(golden.mapHash).toBe(GOLDEN_MAP_HASH);
     expect(golden.mapVersion).toBe(GOLDEN_MAP_VERSION);
@@ -120,7 +123,7 @@ describe("map generation", () => {
   });
 });
 
-describe("map validation", () => {
+describe("map validation", HEAVY, () => {
   const land = golden.cells.flags.findIndex((flags) => flags === 0);
   const river = golden.cells.flags.findIndex(
     (flags, cell) => (flags & 4) !== 0 && (defined(golden.cells.flags[golden.cells.flowTo[cell] as number]) & 1) === 0,

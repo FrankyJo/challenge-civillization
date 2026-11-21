@@ -32,7 +32,10 @@ function defined<T>(value: T | null | undefined): T {
 }
 const culture = (id: string): Culture => defined(pack.cultures.find((entry) => entry.cultureId === id));
 
-describe("seed population synthesis", () => {
+// Full-size syntheses and audits take seconds on shared CI runners.
+const HEAVY = { timeout: 60_000 };
+
+describe("seed population synthesis", HEAVY, () => {
   it("creates exactly 10,000 living people with a golden, reproducible hash", () => {
     expect(golden.population.persons).toHaveLength(10_000);
     expect(golden.population.params).toEqual(DEFAULT_POPULATION_PARAMS);
@@ -110,7 +113,7 @@ describe("seed population synthesis", () => {
   });
 });
 
-describe("population audit", () => {
+describe("population audit", HEAVY, () => {
   const clone = (): SeedPopulation => structuredClone(golden.population);
   const find = (population: SeedPopulation, test: (person: Person) => boolean) =>
     defined(population.persons.find(test));
