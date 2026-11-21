@@ -7,6 +7,7 @@
 //   5. SIGTERM every process and require a clean (code 0) shutdown
 // Requires `pnpm build` and running infrastructure (TEST_DATABASE_URL, TEST_REDIS_URL).
 import { spawn } from "node:child_process";
+import { readdirSync } from "node:fs";
 import { createServer } from "node:net";
 import { resolve } from "node:path";
 import { healthReportSchema } from "@civ/contracts";
@@ -79,12 +80,21 @@ try {
   };
   const cli = "packages/db/dist/cli.js";
 
+  const shipped = readdirSync("packages/db/migrations").filter((file) => file.endsWith(".up.sql")).length;
+  const expectedApplied = `applied: ${Array.from({ length: shipped }, (_, i) => i + 1).join(", ")}`;
   const up = await run(cli, ["up"], baseEnv);
-  expect(up.code === 0 && up.output === "applied: 1", `migrate up failed: ${up.code} ${up.output}`);
+  expect(up.code === 0 && up.output === expectedApplied, `migrate up failed: ${up.code} ${up.output}`);
   const again = await run(cli, ["up"], baseEnv);
   expect(again.code === 0 && again.output === "already up to date", `second migrate up not a no-op: ${again.output}`);
   const status = await run(cli, ["status"], baseEnv);
-  expect(status.code === 0 && /^0001 baseline\s+\d{4}-/.test(status.output), `unexpected status: ${status.output}`);
+  const statusLines = status.output.split("\n");
+  expect(
+    status.code === 0 &&
+      statusLines.length === shipped &&
+      /^0001 baseline\s+\d{4}-/.test(statusLines[0] ?? "") &&
+      statusLines.every((line) => /\s\d{4}-\d{2}-\d{2}T/.test(line)),
+    `unexpected status: ${status.output}`,
+  );
   console.log(`✓ migrations: ${up.output}; rerun: ${again.output}`);
 
   const [apiPort, simPort, workerPort] = await Promise.all([freePort(), freePort(), freePort()]);

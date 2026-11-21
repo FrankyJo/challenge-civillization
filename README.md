@@ -33,14 +33,14 @@ cp .env.example .env                                   # local, non-secret defau
 pnpm install --frozen-lockfile
 pnpm infra:up                                          # PostgreSQL 17 + Redis 7 on 127.0.0.1
 pnpm build
-pnpm db:migrate                                        # also: pnpm db:status, pnpm db:rollback
+pnpm db:migrate                                        # also: pnpm db:status, pnpm db:rollback, pnpm db:reset
 pnpm --filter @civ/web exec playwright install chromium   # once, for e2e
 pnpm gates                                             # full gate (see below)
 ```
 
 Run processes (after `pnpm build`): `pnpm --filter @civ/api start` (:3000), `pnpm --filter @civ/simulation start` (:3001), `pnpm --filter @civ/worker start` (:3002), `pnpm --filter @civ/web dev` (:5173, proxies `/api`). Each Node process serves `GET /health` (liveness) and `GET /health/ready` (dependency readiness, 200/503).
 
-`pnpm gates` runs, failing fast with a nonzero exit: starter verification → repository meta-tests → ESLint + Prettier → typecheck + unit tests + build → integration tests (real PostgreSQL/Redis) → process smoke test (migrations + all three health endpoints + graceful shutdown) → Playwright e2e. Individual steps: `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm build`, `pnpm test:integration`, `pnpm smoke`, `pnpm test:e2e`. Reset local data with `pnpm infra:reset` (destroys the local Docker volume).
+`pnpm gates` runs, failing fast with a nonzero exit: starter verification → repository meta-tests → ESLint + Prettier → typecheck + unit tests + build → integration tests (real PostgreSQL/Redis) → process smoke test (migrations + all three health endpoints + graceful shutdown) → Playwright e2e. Individual steps: `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm build`, `pnpm test:integration`, `pnpm smoke`, `pnpm test:e2e`. Reset local data with `pnpm db:reset` (drops and re-migrates the `civ` schema; refused outside local development) or `pnpm infra:reset` (destroys the local Docker volume). Storage, outbox and recovery: [docs/PERSISTENCE.md](docs/PERSISTENCE.md).
 
 Containers: `docker compose --profile apps up --build` builds one image (`Dockerfile`) and runs migrate, api, simulation and worker against the compose infrastructure.
 

@@ -15,6 +15,7 @@ import {
 } from "../../src/index.js";
 
 const adminUrl = requireTestEnv("TEST_DATABASE_URL");
+const ALL = [1, 2, 3];
 
 let db: EphemeralDatabase | undefined;
 let pool: Pool | undefined;
@@ -59,40 +60,43 @@ describe("migration lifecycle against real PostgreSQL", () => {
   });
 
   it("applies, is idempotent, reports status, and rolls back", async () => {
-    expect(await migrateUp(currentPool())).toEqual([1]);
+    expect(await migrateUp(currentPool())).toEqual(ALL);
     expect(await schemaExists("civ")).toBe(true);
     expect(await migrateUp(currentPool())).toEqual([]);
 
     const status = await migrationStatus(currentPool());
-    expect(status).toHaveLength(1);
-    expect(status[0]?.appliedAt).toBeInstanceOf(Date);
+    expect(status).toHaveLength(ALL.length);
+    expect(status.every((row) => row.appliedAt instanceof Date)).toBe(true);
 
-    expect(await migrateDown(currentPool())).toEqual([1]);
+    expect(await migrateDown(currentPool())).toEqual([3]);
+    expect(await tableExists("civ.proj_world_status")).toBe(false);
+    expect(await tableExists("civ.domain_events")).toBe(true);
+    expect(await migrateDown(currentPool(), { steps: 2 })).toEqual([2, 1]);
     expect(await schemaExists("civ")).toBe(false);
-    expect((await migrationStatus(currentPool()))[0]?.appliedAt).toBeNull();
+    expect((await migrationStatus(currentPool())).every((row) => row.appliedAt === null)).toBe(true);
     expect(await migrateDown(currentPool())).toEqual([]);
 
-    expect(await migrateUp(currentPool())).toEqual([1]);
+    expect(await migrateUp(currentPool())).toEqual(ALL);
   });
 
   it("serialises concurrent migrators so each migration applies exactly once", async () => {
     const results = await Promise.all([migrateUp(currentPool()), migrateUp(currentPool()), migrateUp(currentPool())]);
-    expect(results.flat().sort()).toEqual([1]);
+    expect(results.flat().sort()).toEqual(ALL);
     const rows = await currentPool().query("SELECT count(*)::int AS n FROM public.schema_migrations");
-    expect((rows.rows[0] as { n: number }).n).toBe(1);
+    expect((rows.rows[0] as { n: number }).n).toBe(ALL.length);
   });
 
   it("rolls back a failing migration atomically and records nothing", async () => {
     const dir = await copyMigrations({
-      "0002_broken.up.sql": "CREATE TABLE civ.half_done (id int); SELECT * FROM civ.does_not_exist;",
-      "0002_broken.down.sql": "DROP TABLE civ.half_done;",
+      "0004_broken.up.sql": "CREATE TABLE civ.half_done (id int); SELECT * FROM civ.does_not_exist;",
+      "0004_broken.down.sql": "DROP TABLE civ.half_done;",
     });
     await expect(migrateUp(currentPool(), { dir })).rejects.toThrow(
-      /migration 2 \(broken\) up failed and was rolled back/,
+      /migration 4 \(broken\) up failed and was rolled back/,
     );
     expect(await tableExists("civ.half_done")).toBe(false);
     const status = await migrationStatus(currentPool(), { dir });
-    expect(status.map((s) => s.appliedAt !== null)).toEqual([true, false]);
+    expect(status.map((s) => s.appliedAt !== null)).toEqual([true, true, true, false]);
   });
 
   it("refuses to run when an applied migration was edited", async () => {
@@ -105,12 +109,12 @@ describe("migration lifecycle against real PostgreSQL", () => {
 
   it("refuses to run when the database is ahead of the code", async () => {
     const dir = await copyMigrations({
-      "0002_extra.up.sql": "CREATE TABLE civ.extra (id int);",
-      "0002_extra.down.sql": "DROP TABLE civ.extra;",
+      "0004_extra.up.sql": "CREATE TABLE civ.extra (id int);",
+      "0004_extra.down.sql": "DROP TABLE civ.extra;",
     });
     await migrateUp(currentPool(), { dir });
     await expect(migrateUp(currentPool())).rejects.toThrow(/not on disk/);
-    expect(await migrateDown(currentPool(), { dir, steps: 2 })).toEqual([2, 1]);
+    expect(await migrateDown(currentPool(), { dir, steps: 4 })).toEqual([4, 3, 2, 1]);
   });
 
   it("detects edits to an applied down script", async () => {
@@ -122,14 +126,14 @@ describe("migration lifecycle against real PostgreSQL", () => {
 
   it("refuses to run over a gap in recorded history", async () => {
     const dir = await copyMigrations({
-      "0002_two.up.sql": "SELECT 2;",
-      "0002_two.down.sql": "SELECT 2;",
-      "0003_three.up.sql": "SELECT 3;",
-      "0003_three.down.sql": "SELECT 3;",
+      "0004_four.up.sql": "SELECT 4;",
+      "0004_four.down.sql": "SELECT 4;",
+      "0005_five.up.sql": "SELECT 5;",
+      "0005_five.down.sql": "SELECT 5;",
     });
     await migrateUp(currentPool(), { dir });
-    await currentPool().query("DELETE FROM public.schema_migrations WHERE version = 2");
-    await expect(migrateUp(currentPool(), { dir })).rejects.toThrow(/gap: expected version 2 but found 3/);
+    await currentPool().query("DELETE FROM public.schema_migrations WHERE version = 4");
+    await expect(migrateUp(currentPool(), { dir })).rejects.toThrow(/gap: expected version 4 but found 5/);
   });
 
   it("status is read-only on a fresh database", async () => {
@@ -148,7 +152,7 @@ describe("migration lifecycle against real PostgreSQL", () => {
       await holder.query("SELECT pg_advisory_unlock($1)", [MIGRATION_LOCK_KEY]);
       holder.release();
     }
-    expect(await migrateUp(currentPool())).toEqual([1]);
+    expect(await migrateUp(currentPool())).toEqual(ALL);
   });
 
   it("validates the steps argument", async () => {

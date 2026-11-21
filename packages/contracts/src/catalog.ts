@@ -1,6 +1,7 @@
 import { type z } from "zod";
 import { apiErrorSchema } from "./api-error.js";
 import { checkpointSchema, eventCursorSchema, eventCursorStringSchema } from "./cursor.js";
+import { ledgerNotificationSchema } from "./delivery.js";
 import { healthReportSchema } from "./health.js";
 import { commandRegistry, eventRegistry } from "./messages.js";
 import { proposalReviewSchema, proposalSchema, sourceRecordSchema } from "./proposal.js";
@@ -102,6 +103,14 @@ export const CONTRACT_CATALOG: readonly ContractEntry[] = Object.freeze([
     audience: "internal",
     description: "Canonical state checkpoint metadata: ledger position, instant, state hash, versions.",
     schema: checkpointSchema,
+  },
+  {
+    name: "ledger-notification",
+    version: 1,
+    audience: "internal",
+    description:
+      "Outbox/queue notice that a world's ledger grew; consumers read facts from the ledger, not the notice.",
+    schema: ledgerNotificationSchema,
   },
   {
     name: "api-error",

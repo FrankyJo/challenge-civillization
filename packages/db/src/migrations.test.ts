@@ -21,7 +21,11 @@ describe("checksum", () => {
 describe("loadMigrations", () => {
   it("loads the shipped migrations", async () => {
     const migrations = await loadMigrations();
-    expect(migrations.map((m) => `${m.version}:${m.name}`)).toEqual(["1:baseline"]);
+    expect(migrations.map((m) => `${m.version}:${m.name}`)).toEqual([
+      "1:baseline",
+      "2:authoritative_store",
+      "3:world_status_projection",
+    ]);
     expect(migrations[0]?.checksum).toBe(checksum(migrations[0]?.up ?? "", migrations[0]?.down ?? ""));
   });
 

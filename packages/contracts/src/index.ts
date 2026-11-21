@@ -3,6 +3,7 @@ export * from "./api-error.js";
 export * from "./canonical.js";
 export * from "./catalog.js";
 export * from "./cursor.js";
+export * from "./delivery.js";
 export * from "./envelope.js";
 export * from "./env.js";
 export * from "./health.js";

@@ -61,6 +61,11 @@
       "sha256": "f57333294f9f35a150d8b57a75e0399518beb64e4b22b44a8ee59a7badf1eff2"
     },
     {
+      "file": "v1/ledger-notification.json",
+      "contract": "ledger-notification",
+      "sha256": "4df22eefb94e0fef81cac801f19101a24c23d67652d6f8104d46da17e65c5d9e"
+    },
+    {
       "file": "v1/proposal-review.json",
       "contract": "proposal-review",
       "sha256": "d6729d1627a1d2b15847bb7b51375d9e06b2d94dd463758f1ef1824667021f7f"

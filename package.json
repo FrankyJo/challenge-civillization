@@ -28,6 +28,7 @@
     "db:migrate": "pnpm --filter @civ/db run migrate up",
     "db:rollback": "pnpm --filter @civ/db run migrate down",
     "db:status": "pnpm --filter @civ/db run migrate status",
+    "db:reset": "CIV_ALLOW_DB_RESET=1 pnpm --filter @civ/db run migrate reset",
     "dev": "pnpm --filter @civ/web dev",
     "smoke:container": "bash scripts/container-smoke.sh"
   },

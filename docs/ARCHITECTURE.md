@@ -30,7 +30,7 @@ The allowed dependency graph between these workspaces is executable policy (`scr
 5. API serves public projections and sends cacheable deltas. It never mutates simulation state directly; accepted commands enter the ordered command log.
 6. Vue/Phaser render read models. Reconnecting clients request a snapshot cursor plus subsequent deltas.
 
-PostgreSQL is the source of truth. Redis/BullMQ is a delivery and caching mechanism, never the sole holder of authoritative state.
+PostgreSQL is the source of truth. Redis/BullMQ is a delivery and caching mechanism, never the sole holder of authoritative state. Tables, transaction boundaries, outbox/inbox and recovery are specified in `docs/PERSISTENCE.md`.
 
 ## Determinism
 

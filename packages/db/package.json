@@ -19,11 +19,13 @@
     "typecheck": "tsc -p tsconfig.json",
     "test": "vitest run --dir src",
     "test:integration": "vitest run --dir test/integration --hookTimeout=30000 --testTimeout=30000",
-    "migrate": "node --env-file-if-exists=../../.env dist/cli.js"
+    "migrate": "node --env-file-if-exists=../../.env dist/cli.js",
+    "bench": "node bench/ledger.bench.mjs"
   },
   "dependencies": {
     "@civ/contracts": "workspace:*",
     "pg": "8.23.1",
+    "pg-connection-string": "2.14.1",
     "zod": "4.6.7"
   },
   "devDependencies": {

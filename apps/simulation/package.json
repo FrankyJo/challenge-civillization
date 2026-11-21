@@ -8,7 +8,8 @@
     "build": "tsc -p tsconfig.build.json",
     "typecheck": "tsc -p tsconfig.json",
     "test": "vitest run --dir src",
-    "start": "node --env-file-if-exists=../../.env dist/main.js"
+    "start": "node --env-file-if-exists=../../.env dist/main.js",
+    "test:integration": "vitest run --dir test/integration --hookTimeout=60000 --testTimeout=60000"
   },
   "dependencies": {
     "@civ/contracts": "workspace:*",
@@ -16,5 +17,8 @@
     "@civ/domain": "workspace:*",
     "@civ/telemetry": "workspace:*",
     "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@civ/testing": "workspace:*"
   }
 }

@@ -96,7 +96,11 @@ The result is a TypeScript tagged union (`Command`, `DomainEvent`) that narrows 
 
 Defining a variant uses `defineCommand` / `defineEvent`, which require a `z.strictObject` payload, a valid name and version, and, for commands, at least one allowed actor kind.
 
-The only variants registered so far are the world-control pair specified in `docs/SECURITY-OPERATIONS.md` (`world.pause`/`world.resume` and `world.paused`/`world.resumed`). Later phases add variants as their specs define them.
+Registered variants: the world-control pair specified in `docs/SECURITY-OPERATIONS.md` (`world.pause`/`world.resume`, `world.paused`/`world.resumed`) and the kernel's clock pair (`world.advance`/`world.advanced`, `docs/KERNEL.md`). Later phases add variants as their specs define them.
+
+## Delivery notifications
+
+`ledger-notification` (internal) is the outbox/queue payload `{ schemaVersion, worldId, fromPosition, toPosition }` announcing that ledger events `[fromPosition, toPosition)` were committed. It carries no facts: consumers read events from the ledger by their own durable cursor (`docs/PERSISTENCE.md`).
 
 ## Evolution and compatibility
 
